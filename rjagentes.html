@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>AGENTE EXCLUSIVO - RASPA VALIENTE</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Fredoka:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#070711;color:#e8e8f0;font-family:'Inter',sans-serif;display:flex;justify-content:center}
+.app{width:100%;max-width:600px;min-height:100vh;padding-bottom:90px}
+.header{position:sticky;top:0;z-index:50;background:rgba(12,12,22,0.98);backdrop-filter:blur(16px);border-bottom:1px solid #1e1e36;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:'Fredoka';font-weight:800;font-size:18px;color:#ffde00}
+.sub{font-size:9px;color:#6b6b8a;letter-spacing:0.8px;font-weight:600}
+.card{background:#121224;border:1px solid #1e1e36;border-radius:20px;padding:16px;margin:12px;box-shadow:0 10px 30px rgba(0,0,0,0.4)}
+.card-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.card-h b{font-size:13px;font-weight:800;color:white;display:flex;align-items:center;gap:8px}
+.badge{font-size:8px;padding:5px 10px;border-radius:20px;font-weight:800}
+.badge-y{background:#ffde00;color:#000} .badge-g{background:#00e676;color:#000} .badge-r{background:#ff3b3b;color:white}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px}
+.s-card{border-radius:16px;padding:14px;text-align:center;border:1px solid #1e1e36;background:#121224;position:relative}
+.s-card b{font-size:20px;font-weight:800;font-family:'Fredoka';color:white;display:block}
+.s-card span{font-size:8px;color:#8a8ab0;font-weight:700;letter-spacing:0.8px}
+.nav{display:flex;gap:6px;padding:10px 12px;overflow-x:auto;background:#070711;position:sticky;top:62px;z-index:40;border-bottom:1px solid #121224}
+.nav::-webkit-scrollbar{display:none}
+.n-tab{padding:10px 16px;border-radius:12px;background:#121224;border:1px solid #1e1e36;color:#6b6b8a;font-weight:700;font-size:11px;white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:6px}
+.n-tab.active{background:white;color:#000;border-color:white}
+.input{width:100%;background:#0a0a1a;border:1px solid #1e1e36;border-radius:12px;padding:13px;color:white;font-size:13px;margin-bottom:8px;min-height:46px}
+.input:focus{border-color:#ffde00;outline:none}
+.btn{border:none;border-radius:12px;padding:13px 16px;font-weight:800;font-size:12px;cursor:pointer;min-height:46px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn:active{transform:scale(0.97)}
+.btn-y{background:#ffde00;color:#000;width:100%;box-shadow:0 6px 18px rgba(255,222,0,0.25)}
+.btn-g{background:#00e676;color:#000;width:100%}
+.btn-dark{background:#1a1a30;color:#8a8ab0;border:1px solid #1e1e36}
+.btn-r{background:#ff3b3b;color:white}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:420px){.row{grid-template-columns:1fr}}
+.item{background:#0a0a1a;border:1px solid #1e1e36;border-radius:14px;padding:14px;margin-bottom:10px}
+.item-h{display:flex;justify-content:space-between;align-items:flex-start}
+.item-title{font-weight:800;font-size:13px;color:white}
+.item-sub{font-size:10px;color:#6b6b8a;margin-top:3px;line-height:1.4}
+.pill{font-size:10px;padding:5px 10px;border-radius:20px;font-weight:800;background:#1a1a30;border:1px solid #1e1e36}
+.pill-g{color:#00e676;background:#00e67611;border-color:#00e67633}
+.pill-y{color:#ffde00;background:#ffde0011;border-color:#ffde0033}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px}
+.actions .btn{font-size:10px;padding:10px;min-height:38px}
+.hidden{display:none!important}
+.empty{text-align:center;color:#444;padding:30px 20px;font-size:12px;border:1px dashed #1e1e36;border-radius:12px}
+.hist-line{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #121224;font-size:11px}
+.login-wrap{padding:30px 16px;max-width:420px;margin:0 auto;margin-top:30px}
+.login-card{background:#121224;border:1px solid #1e1e36;border-radius:24px;padding:24px;box-shadow:0 30px 60px rgba(0,0,0,0.6)}
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<div class="app">
+<div id="loginBox" class="login-wrap">
+<div class="login-card">
+<div style="text-align:center;margin-bottom:20px"><div class="logo" style="font-size:22px">🤝 PANEL AGENTE</div><div style="font-size:9px;background:#ff3b3b;color:white;padding:5px 12px;border-radius:20px;display:inline-block;margin-top:8px;font-weight:800">EXCLUSIVO - SOLO AUTORIZADOS</div><p style="font-size:11px;color:#6b6b8a;margin-top:10px;line-height:1.4">Tus clientes son <b style="color:white">solo tuyos</b>, no se mezclan con otros agentes. Solo vos los ves, les cargas cartones y les pagás premios.</p></div>
+<input class="input" id="agentUser" placeholder="Usuario agente (te da el Admin)">
+<input class="input" id="agentPass" type="password" placeholder="Contraseña">
+<button class="btn btn-y" onclick="loginAgente()">🔐 ENTRAR A MIS CLIENTES</button>
+<p id="loginErr" style="font-size:11px;margin-top:10px;display:none;padding:10px;border-radius:10px"></p>
+</div>
+</div>
+
+<div id="panel" class="hidden">
+<div class="header"><div><div class="logo">🤝 AGENTE <span id="agentName" style="color:white"></span></div><div class="sub">CLIENTES EXCLUSIVOS • NO SE MEZCLAN</div></div><div style="text-align:right"><div class="badge badge-y" id="agentCartones">0 CART</div><button class="btn-dark btn" style="padding:6px 10px;min-height:auto;font-size:10px;margin-top:4px" onclick="logout()">Salir</button></div></div>
+
+<div class="stats" id="stats"></div>
+
+<div class="nav">
+<div class="n-tab active" onclick="showTab('clientes',this)">👥 Mis Clientes</div>
+<div class="n-tab" onclick="showTab('crear',this)">➕ Crear Cliente</div>
+<div class="n-tab" onclick="showTab('cargar',this)">📦 Cargar Cartón</div>
+<div class="n-tab" onclick="showTab('retiros',this)">🏆 Retirar Premio</div>
+</div>
+
+<!-- MIS CLIENTES EXCLUSIVOS -->
+<div id="tab-clientes">
+<div class="card"><div class="card-h"><b>👥 Mis Clientes Exclusivos</b><span class="badge badge-y" id="countCli">0</span></div><p style="font-size:10px;color:#6b6b8a;margin-bottom:10px">Lista exclusiva tuya. Otros agentes no ven estos clientes. Cada cliente tiene su propio historial de premios.</p><input class="input" id="buscarCli" placeholder="🔍 Buscar mi cliente..." oninput="renderClientes()"></div>
+<div id="clientesLista" style="margin:0 12px"></div>
+</div>
+
+<!-- CREAR CLIENTE -->
+<div id="tab-crear" class="hidden">
+<div class="card">
+<div class="card-h"><b>➕ Crear Nuevo Cliente Mío</b><span class="badge badge-g">EXCLUSIVO</span></div>
+<p style="font-size:11px;color:#6b6b8a;margin-bottom:12px">Este cliente quedará atado solo a tu cuenta <b style="color:white" id="agTag2">agente</b>. Otros agentes no lo verán nunca.</p>
+<input class="input" id="newCliUser" placeholder="Usuario cliente ej: juan123">
+<input class="input" id="newCliPass" placeholder="Contraseña cliente ej: 1234">
+<div class="row"><input class="input" id="newCliCart" type="number" value="5" placeholder="Cartones iniciales"><input class="input" id="newCliLote" placeholder="Lote" value="AG-001"></div>
+<p style="font-size:10px;color:#6b6b8a;margin:6px 0">Se descontarán <b style="color:#ffde00" id="descCart">5</b> cartones de tu stock de <b id="stockTxt">0</b></p>
+<button class="btn btn-y" onclick="crearCliente()">✅ CREAR CLIENTE EXCLUSIVO MIO</button>
+</div>
+</div>
+
+<!-- CARGAR CARTON -->
+<div id="tab-cargar" class="hidden">
+<div class="card" style="border-color:#ffde00">
+<div class="card-h"><b>📦 Cargar Cartones a Mis Clientes</b><span class="badge badge-y">SOLO CARTONES</span></div>
+<p style="font-size:11px;color:#6b6b8a;margin-bottom:10px">Solo podés cargar <b style="color:white">cartones</b> a tus clientes. Se descuentan de tu stock. No se carga saldo, solo cartones.</p>
+<select class="input" id="selectCli"><option>Cargando mis clientes exclusivos...</option></select>
+<div class="row"><input class="input" id="cargaCant" type="number" placeholder="Cantidad cartones ej: 10"><input class="input" id="cargaLote" placeholder="Lote / Nota"></div>
+<button class="btn btn-y" onclick="cargarCartones()">🎲 CARGAR CARTONES A MI CLIENTE</button>
+<div style="display:flex;gap:6px;margin-top:8px"><button class="btn btn-dark" style="flex:1" onclick="setCant(5)">+5</button><button class="btn btn-dark" style="flex:1" onclick="setCant(10)">+10</button><button class="btn btn-dark" style="flex:1" onclick="setCant(20)">+20</button><button class="btn btn-dark" style="flex:1" onclick="setCant(50)">+50</button></div>
+</div>
+<div class="card"><div class="card-h"><b>📦 Mi Stock de Cartones</b></div><div id="miStock" style="font-size:12px;color:#8a8ab0"></div></div>
+</div>
+
+<!-- RETIRAR PREMIO -->
+<div id="tab-retiros" class="hidden">
+<div class="card">
+<div class="card-h"><b>🏆 Retirar Premio - Mis Clientes</b><span class="badge badge-g">PREMIOS</span></div>
+<p style="font-size:11px;color:#6b6b8a;margin-bottom:10px">Acá ves qué premio ganó cada uno de tus clientes exclusivos y cuánto tenés que pagarle. Cuando pagás, queda en historial como premio retirado.</p>
+<div id="retirosLista"></div>
+</div>
+<div class="card"><div class="card-h"><b>📜 Historial Premios Retirados (Mis Clientes)</b></div><div id="historialPremios"></div></div>
+</div>
+
+</div>
+</div>
+
+<script>
+const firebaseConfig={apiKey:"AIzaSyBVYB9BRSMPR4S6QpogWGnSSqwFCI1-bh8",authDomain:"raspaygana-fdacb.firebaseapp.com",projectId:"raspaygana-fdacb",storageBucket:"raspaygana-fdacb.firebasestorage.app",messagingSenderId:"851746213050",appId:"1:851746213050:web:f27c58c79af81caedb4683"};
+firebase.initializeApp(firebaseConfig);
+const db=firebase.firestore();
+let currentAgent=null, agentData=null, cacheMyClients={}, cacheMyClientsData={};
+
+function loginAgente(){
+  let u=document.getElementById('agentUser').value.trim().toLowerCase();
+  let p=document.getElementById('agentPass').value.trim();
+  let err=document.getElementById('loginErr');
+  if(!u||!p){err.style.display='block';err.style.background='#ff3b3b22';err.style.color='#ff3b3b';err.textContent='Poné usuario y pass que te dio el Admin';return}
+  err.style.display='block';err.style.background='#121224';err.style.color='#8a8ab0';err.textContent='Verificando autorización...';
+  db.collection('agents').doc(u).get().then(snap=>{
+    if(!snap.exists){err.style.background='#ff3b3b22';err.style.color='#ff3b3b';err.textContent='❌ No estás autorizado. Pedí al Admin que te cree.';return}
+    let data=snap.data();
+    if(data.bloqueado){err.style.background='#ff3b3b22';err.style.color='#ff3b3b';err.textContent='🔒 Bloqueado por Admin';return}
+    if(data.pass!==p){err.style.background='#ff3b3b22';err.style.color='#ff3b3b';err.textContent='❌ Contraseña incorrecta';return}
+    currentAgent=u;localStorage.setItem('rv_agent',u);err.style.display='none';
+    document.getElementById('loginBox').style.display='none';document.getElementById('panel').classList.remove('hidden');
+    document.getElementById('agentName').textContent=u;
+    document.getElementById('agTag2').textContent=u;
+    initAgente();
+  });
+}
+function checkAgent(){let a=localStorage.getItem('rv_agent');if(!a)return;currentAgent=a;document.getElementById('loginBox').style.display='none';document.getElementById('panel').classList.remove('hidden');document.getElementById('agentName').textContent=a;let t=document.getElementById('agTag2');if(t)t.textContent=a;initAgente();}
+function logout(){localStorage.removeItem('rv_agent');document.getElementById('panel').classList.add('hidden');document.getElementById('loginBox').style.display='block';}
+function showTab(t,el){document.querySelectorAll('.n-tab').forEach(x=>x.classList.remove('active'));if(el)el.classList.add('active');['clientes','crear','cargar','retiros'].forEach(k=>document.getElementById('tab-'+k).classList.add('hidden'));document.getElementById('tab-'+t).classList.remove('hidden');if(t==='clientes')renderClientes();if(t==='cargar'){renderClientes();renderStock();}if(t==='retiros')renderRetiros();}
+async function initAgente(){try{let snap=await db.collection('agents_data').doc(currentAgent).get();agentData=snap.exists?snap.data():{cartones:0,clientes:0};document.getElementById('agentCartones').textContent=(agentData.cartones||0)+' CART';await loadMyClients();renderStats();renderClientes();renderStock();renderRetiros();}catch(e){}}
+async function loadMyClients(){
+  cacheMyClients={};cacheMyClientsData={};
+  try{
+    let users=await db.collection('users').get();
+    let usersData=await db.collection('users_data').get();
+    users.forEach(doc=>{let d=doc.data();if(d.agent===currentAgent||d.agente===currentAgent)cacheMyClients[doc.id]=d;});
+    usersData.forEach(doc=>{let d=doc.data();if(d.agent===currentAgent||d.agente===currentAgent||cacheMyClients[doc.id])cacheMyClientsData[doc.id]=d;});
+  }catch(e){}
+}
+function renderStats(){
+  let totalCli=Object.keys(cacheMyClientsData).length;
+  let cartClientes=Object.values(cacheMyClientsData).reduce((a,b)=>a+(b.cartones||0),0);
+  let pendientes=Object.values(cacheMyClientsData).filter(d=>d.saldo>0).length;
+  let totalPremiosGanados=0;
+  for(let id in cacheMyClientsData){(cacheMyClientsData[id].hist||[]).forEach(h=>{if(h.monto>0&&h.detalle.toLowerCase().includes('gan'))totalPremiosGanados+=h.monto;});}
+  document.getElementById('stats').innerHTML=`<div class="s-card"><span>MIS CLIENTES</span><b>${totalCli}</b></div><div class="s-card"><span>MI STOCK</span><b>${agentData.cartones||0}</b></div><div class="s-card"><span>RETIROS</span><b>${pendientes}</b></div>`;
+  document.getElementById('countCli').textContent=totalCli+' clientes exclusivos';
+  document.getElementById('stockTxt').textContent=(agentData.cartones||0)+' cartones';
+}
+async function renderClientes(){
+  await loadMyClients();
+  let q=(document.getElementById('buscarCli')?.value||'').toLowerCase();
+  let sel=document.getElementById('selectCli');
+  let html='';let selHtml='<option value="">Seleccionar mi cliente exclusivo</option>';
+  let allIds=new Set([...Object.keys(cacheMyClients),...Object.keys(cacheMyClientsData)]);
+  if(allIds.size===0){document.getElementById('clientesLista').innerHTML='<div class="empty">Aún no tenés clientes exclusivos.<br>Creá uno en ➕ Crear Cliente</div>';if(sel)sel.innerHTML='<option>Sin clientes exclusivos</option>';return;}
+  allIds.forEach(uid=>{
+    let u=cacheMyClients[uid]||{name:uid};
+    let d=cacheMyClientsData[uid]||{cartones:0,saldo:0,ganados:0};
+    if(q&&!uid.toLowerCase().includes(q))return;
+    selHtml+=`<option value="${uid}">${uid} - ${d.cartones||0}c - ${(d.saldo||0).toLocaleString()} GS por pagar</option>`;
+    let ultimoPremio=(d.hist||[]).find(h=>h.monto>0&&h.detalle.toLowerCase().includes('gan'))||null;
+    html+=`<div class="item"><div class="item-h"><div><div class="item-title">👤 ${uid}</div><div class="item-sub">Pass: <b style="color:white">${u.pass||'***'}</b> • ${d.ganados||0} premios ganados<br>${ultimoPremio?`<span style="color:#00e676">🏆 Último: ${ultimoPremio.detalle} +${ultimoPremio.monto.toLocaleString()} GS</span>`: '<span style="color:#6b6b8a">Sin premios aún</span>'}</div></div><div style="text-align:right"><div class="pill">${d.cartones||0} CART</div><div class="pill pill-g" style="margin-top:4px">${(d.saldo||0).toLocaleString()} GS</div></div></div><div class="actions"><button class="btn btn-y" onclick="quickCargar('${uid}',5)">+5 CART</button><button class="btn btn-y" onclick="quickCargar('${uid}',10)">+10 CART</button><button class="btn btn-g" onclick="pagarPremio('${uid}')">🏆 Pagar Premio</button><button class="btn btn-dark" onclick="verHistorial('${uid}')">📜 Historial</button></div></div>`;
+  });
+  document.getElementById('clientesLista').innerHTML=html||'<div class="empty">Sin resultados</div>';
+  if(sel)sel.innerHTML=selHtml;
+}
+function setCant(n){document.getElementById('cargaCant').value=n;document.getElementById('descCart').textContent=document.getElementById('newCliCart').value||5;}
+async function crearCliente(){
+  let u=document.getElementById('newCliUser').value.trim().toLowerCase();
+  let p=document.getElementById('newCliPass').value.trim()||'1234';
+  let cart=parseInt(document.getElementById('newCliCart').value)||0;
+  let lote=document.getElementById('newCliLote').value.trim()||'AG-'+Date.now();
+  if(!u){alert('Poné usuario cliente');return}
+  if(cart>(agentData.cartones||0)){alert(`No tenés suficientes cartones. Tenés ${agentData.cartones}, querés dar ${cart}`);return}
+  if(cart<=0){alert('Poné cartones');return}
+  try{
+    let ex=await db.collection('users').doc(u).get();
+    if(ex.exists){alert('Ese usuario ya existe en el sistema');return}
+    await db.collection('users').doc(u).set({name:u,pass:p,created:new Date().toLocaleString(),agent:currentAgent,agente:currentAgent,balance:0,availableCartons:cart});
+    await db.collection('users_data').doc(u).set({saldo:0,cartones:cart,ganados:0,hist:[{fecha:new Date().toLocaleString(),detalle:`Cliente creado por agente ${currentAgent}`,premio:`Alta ${lote}`,monto:0}],lotes:[{cant:cart,lote:lote,fecha:new Date().toLocaleString()}],bloqueado:false,agent:currentAgent,agente:currentAgent});
+    agentData.cartones=(agentData.cartones||0)-cart;
+    agentData.clientes=(agentData.clientes||0)+1;
+    agentData.hist=agentData.hist||[];
+    agentData.hist.unshift({fecha:new Date().toLocaleString(),detalle:`Creó cliente ${u} con ${cart} cartones`,premio:`Cliente ${u}`,monto:0});
+    await db.collection('agents_data').doc(currentAgent).set(agentData,{merge:true});
+    await db.collection('agents').doc(currentAgent).set({cartones:agentData.cartones},{merge:true});
+    alert(`✅ Cliente exclusivo ${u} creado con ${cart} cartones. Solo vos lo ves.`);
+    document.getElementById('newCliUser').value='';document.getElementById('newCliPass').value='';document.getElementById('newCliCart').value='5';
+    await loadMyClients();renderStats();renderClientes();renderStock();renderRetiros();
+  }catch(e){alert(e.message);}
+}
+async function cargarCartones(){
+  let sel=document.getElementById('selectCli').value;
+  let cant=parseInt(document.getElementById('cargaCant').value)||0;
+  let lote=document.getElementById('cargaLote').value.trim()||'Carga';
+  if(!sel||cant<=0){alert('Seleccioná tu cliente exclusivo y cantidad');return}
+  if(cant>(agentData.cartones||0)){alert(`No tenés stock. Tenés ${agentData.cartones} cartones`);return}
+  try{
+    let d=cacheMyClientsData[sel]||{saldo:0,cartones:0,hist:[],lotes:[],agent:currentAgent};
+    if(d.agent!==currentAgent&&d.agente!==currentAgent){alert('Este cliente no es tuyo');return}
+    d.cartones=(d.cartones||0)+cant;
+    d.lotes=d.lotes||[];d.lotes.unshift({cant,lote,fecha:new Date().toLocaleString()});
+    d.hist=d.hist||[];d.hist.unshift({fecha:new Date().toLocaleString(),detalle:`Carga ${cant} cartones por agente ${currentAgent}`,premio:`Carga ${cant}c`,monto:0});
+    d.agent=currentAgent;d.agente=currentAgent;
+    await db.collection('users_data').doc(sel).set(d,{merge:true});
+    await db.collection('users').doc(sel).set({availableCartons:d.cartones,agent:currentAgent,agente:currentAgent},{merge:true});
+    agentData.cartones-=cant;
+    await db.collection('agents_data').doc(currentAgent).set(agentData,{merge:true});
+    await db.collection('agents').doc(currentAgent).set({cartones:agentData.cartones},{merge:true});
+    alert(`✅ ${cant} cartones a tu cliente exclusivo ${sel}. Te quedan ${agentData.cartones}`);
+    document.getElementById('cargaCant').value='';document.getElementById('cargaLote').value='';
+    await loadMyClients();renderClientes();renderStats();renderStock();renderRetiros();
+  }catch(e){alert(e.message);}
+}
+function quickCargar(uid,n){document.getElementById('selectCli').value=uid;document.getElementById('cargaCant').value=n;showTab('cargar',document.querySelectorAll('.n-tab')[2]);}
+function renderStock(){let el=document.getElementById('miStock');if(!el)return;el.innerHTML=`Cartones disponibles para vender: <b style="color:#ffde00;font-size:16px">${agentData.cartones||0}</b><br>Clientes exclusivos: <b>${Object.keys(cacheMyClientsData).length}</b><br><br><span style="font-size:10px;color:#6b6b8a">Cuando cargas cartones a un cliente, se descuentan de tu stock. Pedí más al Admin RF.</span>`;document.getElementById('agentCartones').textContent=(agentData.cartones||0)+' CART';document.getElementById('stockTxt').textContent=(agentData.cartones||0)+' cartones';}
+async function renderRetiros(){
+  await loadMyClients();
+  let htmlRet='';let htmlHist='';
+  let pendientes=[];let historial=[];
+  for(let uid in cacheMyClientsData){
+    let d=cacheMyClientsData[uid];
+    if(d.agent!==currentAgent&&d.agente!==currentAgent)continue;
+    if((d.saldo||0)>0)pendientes.push({uid,saldo:d.saldo,ganados:d.ganados||0,hist:d.hist||[]});
+    (d.hist||[]).forEach(h=>{
+      if(h.monto>0&& (h.detalle.toLowerCase().includes('gan')||h.detalle.toLowerCase().includes('premio')||h.detalle.toLowerCase().includes('canje')||h.detalle.toLowerCase().includes('jackpot'))){
+        historial.push({uid,fecha:h.fecha,detalle:h.detalle,premio:h.premio||h.detalle,monto:h.monto});
+      }
+      if(h.retirado){historial.push({uid,fecha:h.fecha,detalle:`Premio retirado pagado`,premio:`Retirado ${h.retirado.toLocaleString()} GS`,monto:0,retirado:h.retirado});}
+    });
+  }
+  if(!pendientes.length)htmlRet='<div class="empty">Sin premios por pagar de tus clientes exclusivos ✅</div>';
+  else htmlRet=pendientes.map(p=>{
+    let ultimo=(p.hist||[]).find(h=>h.monto>0)||{detalle:'Premio ganado',monto:p.saldo};
+    return `<div class="item" style="border-color:#00e676"><div class="item-h"><div><div class="item-title">👤 ${p.uid}</div><div class="item-sub">🏆 ${ultimo.detalle}<br>Ganados totales: ${p.ganados}</div></div><div class="item-right"><div class="pill pill-g" style="font-size:13px">${p.saldo.toLocaleString()} GS</div><div style="font-size:9px;color:#6b6b8a;margin-top:4px">Por pagar</div></div></div><button class="btn btn-g" style="margin-top:10px" onclick="pagarPremio('${p.uid}')">✅ PAGUÉ PREMIO ${p.saldo.toLocaleString()} GS</button></div>`;
+  }).join('');
+  document.getElementById('retirosLista').innerHTML=htmlRet;
+
+  historial.sort((a,b)=>b.fecha.localeCompare(a.fecha));
+  if(!historial.length)htmlHist='<div class="empty">Aún no hay premios retirados de tus clientes</div>';
+  else htmlHist=historial.slice(0,30).map(h=>`<div class="hist-line"><div><b>${h.uid}</b> - ${h.detalle}<div style="font-size:9px;color:#6b6b8a">${h.fecha} • ${h.premio}</div></div><div style="text-align:right"><b style="color:${h.retirado?'#8a8ab0':'#00e676'}">${h.retirado?'-'+h.retirado.toLocaleString()+' GS RETIRADO':'+'+h.monto.toLocaleString()+' GS'}</b></div></div>`).join('');
+  document.getElementById('historialPremios').innerHTML=htmlHist;
+}
+async function pagarPremio(uid){
+  let d=cacheMyClientsData[uid];
+  if(!d||d.saldo<=0){alert('Sin premio por pagar');return}
+  if(d.agent!==currentAgent&&d.agente!==currentAgent){alert('Este cliente no es tuyo');return}
+  if(!confirm(`¿Confirmás que pagaste el premio de ${d.saldo.toLocaleString()} GS a tu cliente exclusivo ${uid}?\n\nSe registrará como premio retirado.`))return;
+  try{
+    let monto=d.saldo;
+    d.hist=d.hist||[];
+    d.hist.unshift({fecha:new Date().toLocaleString(),detalle:`Premio retirado pagado por agente ${currentAgent}`,premio:`Retirado ${monto.toLocaleString()} GS`,monto:0,retirado:monto});
+    d.saldo=0;
+    await db.collection('users_data').doc(uid).set(d,{merge:true});
+    await db.collection('users').doc(uid).set({balance:0},{merge:true});
+    alert(`✅ Premio de ${monto.toLocaleString()} GS pagado a ${uid} y registrado en historial`);
+    await loadMyClients();renderClientes();renderStats();renderRetiros();
+  }catch(e){alert(e.message);}
+}
+function verHistorial(uid){
+  let d=cacheMyClientsData[uid];
+  if(!d||!d.hist){alert('Sin historial');return}
+  let txt=d.hist.slice(0,20).map(h=>`${h.fecha} - ${h.detalle} ${h.premio?'['+h.premio+']':''} ${h.monto?'+'+h.monto.toLocaleString()+' GS':''} ${h.retirado?'-'+h.retirado.toLocaleString()+' RETIRADO':''}`).join('\n');
+  alert(`Historial premios de ${uid} (exclusivo tuyo):\n\n${txt}`);
+}
+document.getElementById('newCliCart').addEventListener('input',e=>{document.getElementById('descCart').textContent=e.target.value||0;});
+checkAgent();
+</script>
+</body>
+</html>

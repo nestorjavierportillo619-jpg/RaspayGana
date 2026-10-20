@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>RASPA VALIENTE - CANJE 2-3-4</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#e8d5e0;font-family:'Fredoka',sans-serif;display:flex;justify-content:center;padding:10px;min-height:100vh}
+.hidden{display:none!important}
+.carton{width:100%;max-width:400px;background:linear-gradient(#6a2bb8,#3a0a6b);border-radius:22px;padding:10px;border:4px solid #ffcc00;box-shadow:0 10px 20px rgba(0,0,0,.4)}
+.login-box{background:white;border-radius:18px;padding:20px;border:3px solid #000}
+.input{width:100%;padding:12px;border-radius:10px;border:2px solid #ddd;font-family:Fredoka;font-weight:600;margin-bottom:8px;font-size:14px}
+.btn{width:100%;padding:12px;border-radius:12px;border:none;font-family:Fredoka;font-weight:800;font-size:13px;cursor:pointer;margin-bottom:6px}
+.btn-primary{background:#ffde00;color:#3a0a6b;border:2px solid #000}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.precio{background:#004aad;color:white;border-radius:12px;padding:6px 10px;border:2px solid white;font-weight:800;font-size:10px;text-align:center}
+.precio span{font-size:14px;display:block}
+.titulo{text-align:center;color:#ffde00;font-weight:800;text-shadow:2px 2px 0 #000;line-height:.9;flex:1}
+.sub{margin:8px 0;background:linear-gradient(90deg,#ff7a00,#ff0080);color:white;border-radius:20px;padding:6px 10px;text-align:center;font-size:9px;font-weight:700;display:flex;justify-content:space-between}
+.user-bar{background:#1a0a2e;color:white;border-radius:12px;padding:7px 10px;display:flex;justify-content:space-between;font-size:11px;margin-bottom:8px}
+.saldo-bar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px}
+.saldo-item{background:white;border-radius:10px;padding:7px;text-align:center;border:2px solid #000}
+.saldo-item small{display:block;font-size:7px;color:#666}
+.saldo-item b{font-size:11px}
+.saldo-item.saldo b{color:#00a651;font-size:12px}
+.juego{background:white;border-radius:16px;padding:8px;position:relative;border:3px solid #000}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.celda-wrap{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;border:2px solid #ffb700;background:#fff8dc}
+.celda{width:100%;height:100%;background:#fff8dc;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.capa-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:2;border-radius:8px;touch-action:none}
+.capa-canvas.raspada{opacity:0;pointer-events:none;transition:.5s}
+.controles{display:flex;gap:6px;margin-top:8px}
+.res{margin-top:8px;border-radius:12px;padding:10px;text-align:center;font-weight:800;display:none;font-size:11px}
+.res.gana{background:#00e676;display:block}.res.pierde{background:#ff3b3b;color:white;display:block}.res.riesgo{background:#ffde00;display:block;border:2px dashed #000}
+.intentos{background:#1a0a2e;color:#ffde00;border-radius:12px;padding:7px 10px;margin-top:8px;display:flex;justify-content:space-between;font-size:10px;font-weight:800}
+.circ{width:20px;height:20px;border-radius:50%;background:#333;border:2px solid #555;display:inline-flex;align-items:center;justify-content:center;font-size:9px;margin-left:3px;color:white}
+.circ.usado{background:#00e676;border-color:#00e676;color:#000}
+.bloqueo{position:absolute;inset:0;background:rgba(0,0,0,.85);border-radius:13px;display:none;align-items:center;justify-content:center;color:white;font-weight:800;font-size:18px;z-index:20;text-align:center}
+.bloqueo.show{display:flex}
+.historial{background:white;border-radius:12px;padding:10px;margin-top:8px;border:3px solid #000;max-height:200px;overflow-y:auto}
+.premio-img{width:28px;height:28px;object-fit:contain}
+.btn-hist{background:white;color:#3a0a6b;border:2px solid #000;border-radius:10px;padding:6px 10px;font-family:Fredoka;font-weight:800;font-size:9px;cursor:pointer;text-align:center;line-height:1}
+.btn-hist.active{background:#ffde00!important;color:#000!important;border:3px solid #000!important;transform:scale(1.1);box-shadow:0 3px 0 #000}
+.instruccion{text-align:center;font-size:9px;color:#fff8dc;margin:6px 0;font-weight:600}
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<div class="carton">
+  <div id="loginScreen">
+    <div style="text-align:center;color:#ffde00;font-weight:800;text-shadow:2px 2px 0 #000;margin-bottom:10px">
+      <div style="font-size:26px">RASPA</div><div style="color:white;font-size:24px">VALIENTE</div><div style="font-size:8px;color:white;background:rgba(0,0,0,.4);padding:3px 8px;border-radius:20px;margin-top:4px;display:inline-block">🎯 2=CANJE | 3=MENOR | 4=MAYOR</div>
+    </div>
+    <div class="login-box">
+      <h3 style="text-align:center;color:#3a0a6b;margin-bottom:8px">Jugador</h3>
+      <input class="input" id="user" placeholder="Usuario">
+      <input class="input" id="pass" type="password" placeholder="Contraseña">
+      <label style="display:flex;gap:6px;font-size:11px;margin-bottom:10px"><input type="checkbox" id="remember" checked> Guardar sesión</label>
+      <button class="btn btn-primary" onclick="login()">🔐 ENTRAR</button>
+      <div id="err" style="color:#ff3b3b;font-size:11px;text-align:center;margin-top:6px;display:none"></div>
+    </div>
+  </div>
+  <div id="gameScreen" class="hidden">
+    <div class="user-bar"><span>👤 <b id="userName"></b> <small id="loteInfo" style="opacity:.7"></small></span><button onclick="logout()" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:6px;padding:3px 8px;font-family:Fredoka;font-size:10px">Salir</button></div>
+    <div class="saldo-bar">
+      <div class="saldo-item saldo"><small>SALDO</small><b id="saldo">0 GS</b></div>
+      <div class="saldo-item"><small>CARTONES</small><b id="cartones">0</b></div>
+      <div class="saldo-item"><small>GANADOS</small><b id="ganados">0</b></div>
+    </div>
+    <div class="top">
+      <div class="precio">PRECIO <span id="precioTxt">5.000 GS</span></div>
+      <div class="titulo">RASPA<br><span style="color:white">VALIENTE</span><div style="background:#ff3b3b;color:white;padding:1px 6px;border-radius:10px;font-size:7px;margin-top:2px">💣 BOMBA PIERDE</div></div>
+      <button class="btn-hist" id="btnHistTop" onclick="toggleHistorial(this)">📜<br>HISTORIAL</button>
+    </div>
+    <div class="sub"><span id="subTxt">4 RASPADAS - 2 CANJE / 3 MENOR / 4 MAYOR</span><span style="background:white;color:#ff0080;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:9px">+18</span></div>
+    <div class="instruccion">🎯 2 iguales = CANJE | 3 iguales = MENOR | 4 iguales = MAYOR</div>
+    <div class="juego"><div class="grid" id="grid"></div><div class="bloqueo" id="bloqueo"></div></div>
+    <div class="intentos"><span>INTENTOS:</span><div id="circCont"></div><span id="rest">4 restantes</span></div>
+    <div class="res" id="res"></div>
+    <div class="controles" id="normales"><button class="btn btn-primary" onclick="nuevo()">🎲 NUEVO CARTÓN (-1)</button></div>
+    <div class="controles hidden" id="riesgo"><button class="btn" style="background:#ffde00;border:3px solid #000" id="btnPlantarse" onclick="plantarse()">💰 CANJEAR</button><button class="btn" style="background:#00e676;border:2px solid #000" onclick="seguir()">🔥 SEGUIR POR MAS</button></div>
+    <div id="sec-historial" class="hidden"><div class="historial"><h4 style="font-size:11px;color:#3a0a6b;display:flex;justify-content:space-between"><span>📜 Historial</span><span id="serieTxt" style="font-size:8px;color:#999"></span><button onclick="toggleHistorial(document.getElementById('btnHistTop'))" style="background:#ff3b3b;color:white;border:1px solid #000;border-radius:6px;padding:2px 6px;font-size:8px">X</button></h4><div id="histList" style="font-size:10px;margin-top:6px"></div></div></div>
+  </div>
+</div>
+<script>
+const firebaseConfig = {apiKey:"AIzaSyBVYB9BRSMPR4S6QpogWGnSSqwFCI1-bh8",authDomain:"raspaygana-fdacb.firebaseapp.com",projectId:"raspaygana-fdacb",storageBucket:"raspaygana-fdacb.firebasestorage.app",messagingSenderId:"851746213050",appId:"1:851746213050:web:f27c58c79af81caedb4683"};
+firebase.initializeApp(firebaseConfig);
+const db=firebase.firestore();
+const DEFAULT_PREMIOS=[{id:'iman',icon:'🧲',label:'300.000 GS',valor:300000,peso:30},{id:'perro',icon:'🐶',label:'10.000 GS',valor:10000,peso:40},{id:'corona',icon:'👑',label:'5.000.000 GS',valor:5000000,peso:5},{id:'rey',icon:'🤴',label:'100.000 GS',valor:100000,peso:20},{id:'dolar',icon:'💲',label:'1.000.000 GS',valor:1000000,peso:10},{id:'bomba',icon:'💣',label:'BOMBA',valor:0,peso:15,bomba:true}];
+const DEFAULT_CFG={precioCarton:5000,plantarse:10000,intentos:4,probBomba:20,probWin:35};
+let tab=[],ras=[],intentos=0,MAX=4,fin=false,currentUser=null,CFG=DEFAULT_CFG,PREMIOS=DEFAULT_PREMIOS,userData=null;
+let canjePrizeId=null, canjeValor=0;
+
+let audioCtx=null;
+function initAudio(){ try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume(); }catch(e){} }
+function vibrateLose(){ if(navigator.vibrate) navigator.vibrate([80,40,80,40,160]); }
+function playSoundLose(){ initAudio(); if(!audioCtx) return; try{ let o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type='sawtooth'; o.frequency.setValueAtTime(240,audioCtx.currentTime); o.frequency.exponentialRampToValueAtTime(60,audioCtx.currentTime+0.5); g.gain.setValueAtTime(0.22,audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.55); o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+0.55);}catch{} }
+function playSoundBomba(){ initAudio(); if(!audioCtx) return; try{ let o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type='square'; o.frequency.setValueAtTime(180,audioCtx.currentTime); o.frequency.exponentialRampToValueAtTime(28,audioCtx.currentTime+0.65); g.gain.setValueAtTime(0.38,audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.75); o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+0.75);}catch{} }
+
+async function loadConfig(){
+try{
+  const snapGlobal=await db.collection('config').doc('global').get();
+  if(snapGlobal.exists){
+    const g=snapGlobal.data();
+    if(g.cost) CFG.precioCarton=g.cost;
+    if(g.plantarse) CFG.plantarse=g.plantarse;
+    if(g.prizes){
+      PREMIOS=[
+        {id:'p1',icon:g.prizes.p1.symbol||'🧲',label:(g.prizes.p1.val||300000).toLocaleString()+' GS',valor:g.prizes.p1.val||300000,peso:30},
+        {id:'p2',icon:g.prizes.p2.symbol||'🐶',label:(g.prizes.p2.val||10000).toLocaleString()+' GS',valor:g.prizes.p2.val||10000,peso:40},
+        {id:'p3',icon:g.prizes.p3.symbol||'🤴',label:(g.prizes.p3.val||100000).toLocaleString()+' GS',valor:g.prizes.p3.val||100000,peso:20},
+        {id:'p4',icon:g.prizes.p4.symbol||'👑',label:(g.prizes.p4.val||5000000).toLocaleString()+' GS',valor:g.prizes.p4.val||5000000,peso:5},
+        {id:'bomba',icon:g.prizes.bomba?g.prizes.bomba.symbol:'💣',label:'BOMBA',valor:0,peso:15,bomba:true}
+      ];
+    }
+    if(g.probabilities){
+      if(g.probabilities.win) CFG.probWin=g.probabilities.win;
+      if(g.probabilities.winRaspa) CFG.probWin=g.probabilities.winRaspa;
+      if(g.probabilities.bomba) CFG.probBomba=g.probabilities.bomba;
+    }
+    if(g.intentos) CFG.intentos=g.intentos;
+    if(g.allowJackpot===false) PREMIOS=PREMIOS.filter(p=>p.valor<4000000 || p.bomba);
+  }
+  const snapP=await db.collection('config').doc('premios').get();
+  const snapC=await db.collection('config').doc('cfg').get();
+  if(snapP.exists && snapP.data().lista && snapP.data().lista.length>0) PREMIOS=snapP.data().lista;
+  if(snapC.exists){
+    const c=snapC.data();
+    if(c.precioCarton) CFG.precioCarton=c.precioCarton;
+    if(c.plantarse) CFG.plantarse=c.plantarse;
+    if(c.intentos) CFG.intentos=c.intentos;
+    if(c.probBomba) CFG.probBomba=c.probBomba;
+    if(c.probWin) CFG.probWin=c.probWin;
+  }
+}catch(e){}
+updateUIConfig();
+}
+function updateUIConfig(){document.getElementById('precioTxt').textContent=CFG.precioCarton.toLocaleString('es-PY')+' GS'; document.getElementById('btnPlantarse').textContent=`💰 CANJEAR ${CFG.plantarse.toLocaleString()} GS`; document.getElementById('subTxt').textContent=`${CFG.intentos} RASPADAS - 2 CANJE / 3 MENOR / 4 MAYOR`; MAX=CFG.intentos;}
+function renderIcon(icon){if(!icon) return '🎁'; if(icon.startsWith('http')) return `<img class="premio-img" src="${icon}">`; return icon;}
+function weightedRandom(premios){let total=premios.reduce((s,p)=>s+(p.peso||10),0); let r=Math.random()*total; let acc=0; for(let p of premios){acc+=p.peso||10; if(r<=acc) return p;} return premios[0];}
+function toggleHistorial(el){let sec=document.getElementById('sec-historial'); if(sec.classList.contains('hidden')){sec.classList.remove('hidden'); el.classList.add('active'); renderHist();} else {sec.classList.add('hidden'); el.classList.remove('active');}}
+async function getUserData(u){const snap=await db.collection('users_data').doc(u).get(); if(snap.exists) return snap.data(); return {saldo:0,cartones:0,ganados:0,hist:[],lotes:[],bloqueado:false}}
+async function saveUserData(u,d){await db.collection('users_data').doc(u).set(d,{merge:true}); await db.collection('users').doc(u).set({balance:d.saldo,availableCartons:d.cartones},{merge:true}); userData=d; updateUI();}
+function updateUI(){if(!userData) return; document.getElementById('saldo').textContent=userData.saldo.toLocaleString('es-PY')+' GS'; document.getElementById('cartones').textContent=userData.cartones; document.getElementById('ganados').textContent=userData.ganados; if(userData.lotes&&userData.lotes[0]) document.getElementById('loteInfo').textContent='Lote '+userData.lotes[0].lote;}
+async function login(){
+const u=document.getElementById('user').value.trim().toLowerCase();
+const p=document.getElementById('pass').value.trim();
+const err=document.getElementById('err');
+if(!u||!p){err.style.display='block'; err.textContent='Poné usuario'; return}
+err.style.display='block'; err.textContent='Cargando...';
+try{
+const snap=await db.collection('users').doc(u).get();
+if(!snap.exists){err.textContent='Usuario no existe'; return}
+if(snap.data().pass!==p){err.textContent='Contraseña incorrecta'; return}
+userData=await getUserData(u);
+if(userData.bloqueado){err.textContent='Usuario bloqueado'; return}
+currentUser=u; initAudio();
+if(document.getElementById('remember').checked) localStorage.setItem('rv_session',u); else sessionStorage.setItem('rv_session',u);
+document.getElementById('userName').textContent=u;
+document.getElementById('loginScreen').classList.add('hidden');
+document.getElementById('gameScreen').classList.remove('hidden');
+await loadConfig();
+gen(); render(); updateUI(); err.style.display='none';
+}catch(e){err.textContent='Error: '+e.message}
+}
+async function checkSession(){let s=localStorage.getItem('rv_session')||sessionStorage.getItem('rv_session'); if(!s||s==='admin') return; currentUser=s; document.getElementById('userName').textContent=s; document.getElementById('loginScreen').classList.add('hidden'); document.getElementById('gameScreen').classList.remove('hidden'); userData=await getUserData(s); await loadConfig(); gen(); render(); updateUI();}
+function logout(){localStorage.removeItem('rv_session'); sessionStorage.removeItem('rv_session'); currentUser=null; document.getElementById('gameScreen').classList.add('hidden'); document.getElementById('loginScreen').classList.remove('hidden');}
+function gen(){
+let premios=PREMIOS.filter(p=>!p.bomba);
+let bomba=PREMIOS.find(p=>p.bomba)||{id:'bomba',icon:'💣',label:'BOMBA',bomba:true};
+tab=[]; ras=Array(9).fill(false); intentos=0; fin=false; MAX=CFG.intentos;
+canjeValor=0; canjePrizeId=null;
+document.getElementById('btnPlantarse').innerHTML=`💰 CANJEAR`;
+for(let i=0;i<8;i++) tab.push(weightedRandom(premios));
+tab.push(bomba); tab.sort(()=>Math.random()-0.5);
+if(Math.random()*100 < CFG.probWin){let win=weightedRandom(premios); let pos=[0,1,2,3,4,5,6,7,8].sort(()=>Math.random()-0.5).slice(0,3); pos.forEach(p=>{if(!tab[p].bomba) tab[p]=win})}
+}
+function render(){
+const g=document.getElementById('grid'); g.innerHTML='';
+const num=Math.floor(Math.random()*90000)+10000;
+const serie='SERIE A'+(Math.floor(Math.random()*90000)+10000);
+document.getElementById('serieTxt').textContent=serie+' - CARTON '+num;
+tab.forEach((s,idx)=>{
+const w=document.createElement('div'); w.className='celda-wrap';
+const celda=document.createElement('div'); celda.className='celda';
+let iconHtml=renderIcon(s.icon);
+celda.innerHTML=s.bomba?`<div style="font-size:26px">${iconHtml}</div><div style="font-size:7px;color:red;font-weight:800">BOMBA</div>`:`<div style="font-size:26px">${iconHtml}</div><div style="font-size:7px;font-weight:800;text-align:center">${s.label}</div>`;
+const canvas=document.createElement('canvas'); canvas.className='capa-canvas'; canvas.dataset.i=idx;
+w.appendChild(celda); w.appendChild(canvas); g.appendChild(w);
+initScratch(canvas, idx);
+});
+document.getElementById('res').style.display='none'; document.getElementById('res').className='res';
+document.getElementById('bloqueo').classList.remove('show');
+document.getElementById('riesgo').classList.add('hidden'); document.getElementById('riesgo').style.display='none';
+document.getElementById('normales').classList.remove('hidden'); document.getElementById('normales').style.display='flex';
+let cont=document.getElementById('circCont'); cont.innerHTML='';
+for(let i=1;i<=MAX;i++) cont.innerHTML+=`<span class="circ" id="c${i}">${i}</span>`;
+document.getElementById('rest').textContent=MAX+' restantes';
+}
+function initScratch(canvas, idx){
+  const dpr=window.devicePixelRatio||1;
+  let ctx,w,h;
+  function resize(){
+    const rect=canvas.getBoundingClientRect();
+    if(rect.width<10){ setTimeout(resize,80); return; }
+    canvas.width=rect.width*dpr; canvas.height=rect.height*dpr;
+    ctx=canvas.getContext('2d'); ctx.scale(dpr,dpr);
+    w=rect.width; h=rect.height;
+    let grad=ctx.createLinearGradient(0,0,w,h);
+    grad.addColorStop(0,'#d0d0d0'); grad.addColorStop(0.5,'#8a8a8a'); grad.addColorStop(1,'#c0c0c0');
+    ctx.fillStyle=grad; ctx.fillRect(0,0,w,h);
+    ctx.fillStyle='rgba(0,0,0,0.25)'; ctx.font='bold 10px Fredoka'; ctx.textAlign='center';
+    ctx.fillText('RASPÁ',w/2,h/2);
+  }
+  resize();
+  let isDrawing=false, moves=0, counted=false;
+  function getPos(e){let r=canvas.getBoundingClientRect(); return {x:e.clientX-r.left, y:e.clientY-r.top};}
+  function scratch(x,y){ if(!ctx) return; ctx.globalCompositeOperation='destination-out'; ctx.beginPath(); ctx.arc(x,y,16,0,Math.PI*2); ctx.fill();}
+  async function onDown(e){
+    if(fin || ras[idx] || counted) return;
+    e.preventDefault(); isDrawing=true; moves=0;
+    try{ canvas.setPointerCapture(e.pointerId);}catch{}
+    if(!ras[idx]){
+      if(userData.cartones<=0 && intentos===0){alert('Sin cartones! Pedile al agente'); isDrawing=false; return;}
+      if(intentos===0){ userData.cartones=Math.max(0,userData.cartones-1); await saveUserData(currentUser,userData);}
+      ras[idx]=true; counted=true; intentos++;
+      let c=document.getElementById('c'+intentos); if(c){c.classList.add('usado'); c.textContent='✓'}
+      document.getElementById('rest').textContent=(MAX-intentos)+' restantes';
+      if(navigator.vibrate) navigator.vibrate(20);
+    }
+    let p=getPos(e); scratch(p.x,p.y);
+  }
+  function onMove(e){
+    if(!isDrawing || fin) return; e.preventDefault();
+    let p=getPos(e); scratch(p.x,p.y); moves++;
+    if(moves>12) finishCell();
+  }
+  function onUp(e){ if(!isDrawing) return; isDrawing=false; if(moves>4) finishCell(); }
+  function finishCell(){
+    if(canvas.classList.contains('raspada')) return;
+    canvas.classList.add('raspada'); isDrawing=false;
+    setTimeout(()=>{ const s=tab[idx]; if(s.bomba){explotar(); return} evalGame();},200);
+  }
+  canvas.addEventListener('pointerdown', onDown, {passive:false});
+  canvas.addEventListener('pointermove', onMove, {passive:false});
+  canvas.addEventListener('pointerup', onUp);
+  canvas.addEventListener('pointercancel', onUp);
+}
+
+// === LOGICA NUEVA 2=CANJE / 3=MENOR / 4=MAYOR ===
+async function evalGame(){
+  let vis=[]; 
+  ras.forEach((v,i)=>{if(v && !tab[i].bomba) vis.push(tab[i])});
+  let cnt={}; 
+  vis.forEach(s=>cnt[s.id]=(cnt[s.id]||0)+1);
+  
+  let maxCnt=0, idMax=null;
+  for(let id in cnt){ if(cnt[id]>maxCnt){maxCnt=cnt[id]; idMax=id;} }
+
+  // 3 o 4 iguales
+  if(maxCnt>=3){
+    if(maxCnt===3){ await ganar(idMax); return; }
+    if(maxCnt>=4){ await ganarMayor(idMax); return; }
+  }
+
+  // 2 iguales = canje
+  if(maxCnt===2){
+    if(intentos===2){
+      let s=PREMIOS.find(x=>x.id===idMax);
+      canjePrizeId=idMax;
+      canjeValor=s.valor;
+      const r=document.getElementById('res');
+      r.className='res riesgo';
+      r.style.display='block';
+      r.innerHTML=`🎯 2x ${renderIcon(s.icon)} - PODÉS CANJEAR ${s.valor.toLocaleString()} GS O SEGUIR POR 3 IGUALES`;
+      document.getElementById('normales').classList.add('hidden');
+      document.getElementById('normales').style.display='none';
+      const rie=document.getElementById('riesgo');
+      rie.classList.remove('hidden'); rie.style.display='flex';
+      document.getElementById('btnPlantarse').innerHTML=`💰 CANJEAR ${s.valor.toLocaleString()} GS`;
+      return;
+    }
+    if(intentos>=4){
+      await perderCanje();
+      return;
+    }
+  }
+
+  if(intentos>=MAX) await perder();
+}
+
+async function ganar(id){
+  fin=true;
+  let s=PREMIOS.find(x=>x.id===id);
+  userData.saldo+=s.valor;
+  userData.ganados+=1;
+  userData.hist.unshift({fecha:new Date().toLocaleString(), detalle:`Ganó 3x ${s.label}`, monto:s.valor});
+  await saveUserData(currentUser,userData);
+  document.getElementById('bloqueo').classList.add('show');
+  document.getElementById('bloqueo').innerHTML=`🎉<br>3 IGUALES<br><span style="font-size:12px">${s.label}</span>`;
+  const r=document.getElementById('res'); r.className='res gana'; r.style.display='block';
+  r.innerHTML=`🔥 GANASTE 3x ${s.label}! +${s.valor.toLocaleString()} GS`;
+  document.querySelectorAll('.capa-canvas').forEach(c=>c.style.pointerEvents='none');
+}
+
+async function ganarMayor(id){
+  fin=true;
+  let s=PREMIOS.find(x=>x.id===id);
+  let premioFinal = s.valor >= 500000 ? s.valor * 2 : s.valor * 3;
+  if(s.valor>=5000000) premioFinal=s.valor;
+  userData.saldo+=premioFinal;
+  userData.ganados+=1;
+  userData.hist.unshift({fecha:new Date().toLocaleString(), detalle:`JACKPOT 4x ${s.label}`, monto:premioFinal});
+  await saveUserData(currentUser,userData);
+  document.getElementById('bloqueo').classList.add('show');
+  document.getElementById('bloqueo').innerHTML=`👑<br>4 IGUALES JACKPOT<br><span style="font-size:11px">${s.label}</span><br><span style="font-size:13px">+${premioFinal.toLocaleString()} GS</span>`;
+  const r=document.getElementById('res'); r.className='res gana'; r.style.display='block';
+  r.innerHTML=`🔥🔥 JACKPOT 4 IGUALES ${s.label}! +${premioFinal.toLocaleString()} GS`;
+  document.querySelectorAll('.capa-canvas').forEach(c=>c.style.pointerEvents='none');
+}
+
+async function perderCanje(){
+  fin=true;
+  vibrateLose(); playSoundLose();
+  userData.hist.unshift({fecha:new Date().toLocaleString(), detalle:`Perdió canje 2x`, monto:0});
+  await saveUserData(currentUser,userData);
+  document.getElementById('bloqueo').classList.add('show');
+  document.getElementById('bloqueo').innerHTML=`❌<br>CANJE PERDIDO<br><span style="font-size:10px">Tenias 2 iguales y no hiciste 3 en 4 intentos</span>`;
+  const r=document.getElementById('res'); r.className='res pierde'; r.style.display='block';
+  r.innerHTML=`😭 2 iguales no alcanza, necesitabas 3 - Canje perdido`;
+  document.querySelectorAll('.capa-canvas').forEach(c=>c.style.pointerEvents='none');
+}
+
+async function plantarse(){
+  fin=true;
+  let montoCobrar = canjeValor > 0 ? canjeValor : CFG.plantarse;
+  let detalle = canjeValor > 0 ? `Canjeó 2x ${montoCobrar.toLocaleString()} GS` : `Se plantó ${montoCobrar.toLocaleString()} GS`;
+  userData.saldo+=montoCobrar;
+  userData.hist.unshift({fecha:new Date().toLocaleString(), detalle:detalle, monto:montoCobrar});
+  await saveUserData(currentUser,userData);
+  document.getElementById('bloqueo').classList.add('show');
+  document.getElementById('bloqueo').innerHTML=`💰<br>CANJEADO<br><span style="font-size:12px">+${montoCobrar.toLocaleString()} GS</span>`;
+  const r=document.getElementById('res'); r.className='res gana'; r.style.display='block';
+  r.innerHTML=`💰 CANJEASTE +${montoCobrar.toLocaleString()} GS`;
+  document.querySelectorAll('.capa-canvas').forEach(c=>c.style.pointerEvents='none');
+  canjeValor=0; canjePrizeId=null;
+}
+
+function seguir(){document.getElementById('res').style.display='none'; document.getElementById('riesgo').classList.add('hidden'); document.getElementById('riesgo').style.display='none'; document.getElementById('normales').classList.remove('hidden'); document.getElementById('normales').style.display='flex';}
+
+async function explotar(){
+  fin=true;
+  vibrateLose(); playSoundBomba();
+  userData.hist.unshift({fecha:new Date().toLocaleString(), detalle:'Bomba', monto:0});
+  await saveUserData(currentUser,userData);
+  document.getElementById('bloqueo').classList.add('show'); document.getElementById('bloqueo').innerHTML=`💥<br>BOMBA`;
+  const r=document.getElementById('res'); r.className='res pierde'; r.style.display='block'; r.innerHTML=`💣 ¡BOMBA! Perdiste`;
+  document.querySelectorAll('.capa-canvas').forEach(c=>c.style.pointerEvents='none');
+}
+async function perder(){
+  fin=true;
+  vibrateLose(); playSoundLose();
+  userData.hist.unshift({fecha:new Date().toLocaleString(), detalle:'Perdió', monto:0});
+  await saveUserData(currentUser,userData);
+  document.getElementById('bloqueo').classList.add('show'); document.getElementById('bloqueo').innerHTML=`❌<br>PERDISTE`;
+  const r=document.getElementById('res'); r.className='res pierde'; r.style.display='block'; r.innerHTML=`😅 Sin 3 iguales`;
+}
+async function nuevo(){ if(userData.cartones<=0){alert('Sin cartones! Pedile al agente'); return} gen(); render(); updateUI(); }
+function renderHist(){
+  const list=document.getElementById('histList');
+  if(!userData.hist.length){list.innerHTML='<div style="text-align:center;color:#999;padding:8px;font-size:10px">Sin jugadas aún</div>'; return}
+  list.innerHTML=userData.hist.slice(0,20).map(h=>`<div style="display:flex;justify-content:space-between;font-size:10px;padding:5px 0;border-bottom:1px solid #eee"><span>${h.fecha} - ${h.detalle}</span><span style="font-weight:700;color:${h.monto?'#00a651':'#999'}">${h.monto?'+'+h.monto.toLocaleString()+' GS':''}</span></div>`).join('');
+}
+checkSession();
+loadConfig();
+</script>
+</body>
+</html>
