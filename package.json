@@ -1,0 +1,13 @@
+{
+  "name": "raspa-valiente-admin-final",
+  "version": "3.0.0",
+  "private": true,
+  "description": "Admin Final Ordenado - Agentes Exclusivos - Netlify Static",
+  "scripts": {
+    "build": "echo 'No build - static HTML + Firebase'"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": "18.x"
+  }
+}
