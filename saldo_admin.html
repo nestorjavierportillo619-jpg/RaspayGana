@@ -2,360 +2,335 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ADMIN REVENDEDOR PRO - JAVI</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ADMIN v3.3 SEGURO - 0 + BORRAR + ESCRIBIR</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{background:#f6f7fb;color:#111827;font-family:'Inter',sans-serif;display:flex;justify-content:center;min-height:100vh}
-.app{width:100%;max-width:720px;background:#f6f7fb;min-height:100vh;padding-bottom:100px}
-.header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid #e5e7eb;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
-.logo{font-family:'Fredoka';font-weight:700;font-size:20px;color:#111827;letter-spacing:-0.5px}
-.logo span{color:#4f46e5}
-.sub{font-size:10px;color:#6b7280;font-weight:600;letter-spacing:0.6px;margin-top:2px}
-.card{background:white;border:1px solid #e5e7eb;border-radius:16px;padding:16px;margin:12px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
-.card-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.card-title b{font-size:14px;font-weight:700;color:#111827}
-.label{font-size:10px;font-weight:700;color:#6b7280;letter-spacing:0.6px;margin-bottom:6px;text-transform:uppercase}
-.input{width:100%;background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px 14px;color:#111827;font-size:14px;font-weight:500;margin-bottom:10px;transition:.2s}
-.input:focus{border-color:#4f46e5;background:white;outline:none;box-shadow:0 0 0 3px rgba(79,70,229,0.1)}
-.input::placeholder{color:#9ca3af}
-.btn{border:none;border-radius:10px;padding:12px 16px;font-weight:700;font-size:13px;cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
-.btn:active{transform:scale(0.98)}
-.btn-primary{background:#111827;color:white}
-.btn-primary:hover{background:#000}
-.btn-indigo{background:#4f46e5;color:white}
-.btn-indigo:hover{background:#4338ca}
-.btn-success{background:#059669;color:white}
-.btn-ghost{background:#f3f4f6;color:#374151;border:1px solid #e5e7eb}
-.btn-sm{padding:8px 12px;font-size:11px;min-height:auto;width:auto;flex:1}
-.stats{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin:12px}
-.stat{background:white;border:1px solid #e5e7eb;border-radius:14px;padding:14px;text-align:center}
-.stat b{font-family:'Fredoka';font-size:22px;color:#111827;display:block}
-.stat span{font-size:9px;font-weight:700;color:#6b7280;letter-spacing:0.7px;text-transform:uppercase}
-.nav{display:flex;gap:8px;padding:12px;overflow-x:auto;background:#f6f7fb;position:sticky;top:60px;z-index:90}
-.nav::-webkit-scrollbar{display:none}
-.n-tab{padding:10px 16px;border-radius:999px;background:white;border:1px solid #e5e7eb;color:#6b7280;font-weight:600;font-size:12px;white-space:nowrap;cursor:pointer;transition:.2s}
-.n-tab.active{background:#111827;color:white;border-color:#111827;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
-.item{background:white;border:1px solid #e5e7eb;border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer;transition:.2s}
-.item:hover{border-color:#d1d5db;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
-.item.selected{border-color:#4f46e5;background:#eef2ff;box-shadow:0 0 0 3px rgba(79,70,229,0.12)}
-.item.win{border-color:#059669;background:#ecfdf5}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:480px){.row{grid-template-columns:1fr} .stats{grid-template-columns:1fr 1fr}}
-.badge{font-size:9px;padding:4px 10px;border-radius:999px;font-weight:700;letter-spacing:0.3px}
-.badge-agent{background:#eef2ff;color:#4f46e5;border:1px solid #c7d2fe}
-.badge-direct{background:#f3f4f6;color:#6b7280;border:1px solid #e5e7eb}
-.badge-cart{background:#fef3c7;color:#92400e;border:1px solid #fde68a}
-.badge-pay{background:#d1fae5;color:#065f46;border:1px solid #a7f3d0}
-.hidden{display:none!important}
-.sug{position:absolute;background:white;border:1px solid #e5e7eb;border-radius:12px;width:100%;max-height:200px;overflow-y:auto;z-index:200;box-shadow:0 10px 25px rgba(0,0,0,0.12);display:none;top:100%;margin-top:4px}
-.sug div{padding:12px 14px;font-size:13px;border-bottom:1px solid #f3f4f6;cursor:pointer;display:flex;justify-content:space-between}
-.sug div:hover{background:#f9fafb}
-.sug div:last-child{border:none}
-.input-wrap{position:relative}
-.selected-box{display:none;padding:12px 14px;border-radius:12px;font-size:12px;font-weight:600;margin-bottom:10px;border:1px solid}
-.selected-box.cart{background:#eef2ff;border-color:#c7d2fe;color:#3730a3}
-.selected-box.pay{background:#ecfdf5;border-color:#a7f3d0;color:#065f46}
-.divider{height:1px;background:#f3f4f6;margin:14px 0}
-.hint{font-size:11px;color:#6b7280;line-height:1.5;background:#f9fafb;border:1px dashed #e5e7eb;border-radius:10px;padding:10px 12px;margin-bottom:10px}
-.login-wrap{padding:40px 16px;max-width:400px;margin:0 auto;margin-top:60px}
-.login-card{background:white;border:1px solid #e5e7eb;border-radius:20px;padding:28px;box-shadow:0 20px 40px rgba(0,0,0,0.08)}
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f6f7fb;font-family:'Inter',sans-serif;display:flex;justify-content:center;min-height:100vh;min-height:100dvh;overflow-x:hidden}.app{width:100%;max-width:720px;padding-bottom:80px;background:#f6f7fb;min-height:100vh;min-height:100dvh}.header{position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid #e5e7eb;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;z-index:100;min-height:60px}.logo{font-family:'Fredoka';font-size:20px;font-weight:700}.logo span{color:#4f46e5}.card{background:white;border:1px solid #e5e7eb;border-radius:16px;padding:16px;margin:12px;box-shadow:0 1px 3px rgba(0,0,0,.04)}.label{font-size:10px;font-weight:700;color:#6b7280;margin-bottom:6px;text-transform:uppercase}.input{width:100%;background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px 14px;font-size:14px;margin-bottom:10px;outline:none}.input:focus{border-color:#4f46e5;background:white;box-shadow:0 0 0 3px rgba(79,70,229,.1)}.btn{border:none;border-radius:10px;padding:12px;font-weight:700;font-size:13px;cursor:pointer;width:100%;display:flex;justify-content:center;gap:8px;align-items:center;min-height:44px;transition:.15s}.btn:active{transform:scale(.98)}.btn-primary{background:#111827;color:white}.btn-indigo{background:#4f46e5;color:white}.btn-success{background:#059669;color:white}.btn-ghost{background:#f3f4f6;color:#374151;border:1px solid #e5e7eb}.btn-sm{padding:8px 12px;font-size:11px;min-height:32px;width:auto;flex:1}.btn-danger{background:#fee2e2;color:#991b1b;border:1px solid #fecaca}.stats{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin:12px}.stat{background:white;border:1px solid #e5e7eb;border-radius:14px;padding:14px;text-align:center;min-height:70px;display:flex;flex-direction:column;justify-content:center}.stat b{font-family:'Fredoka';font-size:22px;display:block}.stat span{font-size:9px;font-weight:700;color:#6b7280;text-transform:uppercase}.nav{display:flex;gap:8px;padding:12px;overflow-x:auto;position:sticky;top:60px;background:#f6f7fb;z-index:90;-webkit-overflow-scrolling:touch}.nav::-webkit-scrollbar{display:none}.n-tab{padding:10px 16px;border-radius:999px;background:white;border:1px solid #e5e7eb;font-weight:600;font-size:12px;white-space:nowrap;cursor:pointer;min-height:36px}.n-tab.active{background:#111827;color:white;border-color:#111827}.item{background:white;border:1px solid #e5e7eb;border-radius:12px;padding:14px;margin-bottom:10px}.item.selected{border-color:#4f46e5;background:#eef2ff;box-shadow:0 0 0 3px rgba(79,70,229,.12)}.item.win{border-color:#059669;background:#ecfdf5}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.badge{font-size:9px;padding:4px 10px;border-radius:999px;font-weight:700}.badge-agent{background:#eef2ff;color:#4f46e5;border:1px solid #c7d2fe}.badge-direct{background:#f3f4f6;color:#6b7280;border:1px solid #e5e7eb}.badge-cart{background:#fef3c7;color:#92400e;border:1px solid #fde68a}.badge-pay{background:#d1fae5;color:#065f46;border:1px solid #a7f3d0}.badge-zero{background:#fee2e2;color:#991b1b;border:1px solid #fecaca}.badge-lock{background:#111827;color:white;border:1px solid #000}.hidden{display:none!important}.sug{position:absolute;background:white;border:1px solid #e5e7eb;border-radius:12px;width:100%;max-height:200px;overflow-y:auto;z-index:200;display:none;top:100%;margin-top:4px;box-shadow:0 10px 25px rgba(0,0,0,.12)}.sug div{padding:12px 14px;font-size:13px;border-bottom:1px solid #f3f4f6;cursor:pointer;display:flex;justify-content:space-between}.sug div:hover{background:#f9fafb}.input-wrap{position:relative}.selected-box{display:none;padding:12px;border-radius:12px;font-size:12px;font-weight:600;margin-bottom:10px;border:1px solid}.selected-box.cart{background:#eef2ff;border-color:#c7d2fe;color:#3730a3}.selected-box.pay{background:#ecfdf5;border-color:#a7f3d0;color:#065f46}.hint{font-size:11px;color:#6b7280;background:#f9fafb;border:1px dashed #e5e7eb;border-radius:10px;padding:10px;margin-bottom:10px;line-height:1.5}.login-wrap{padding:40px 16px;max-width:400px;margin:60px auto 0;width:100%}@media(max-width:360px){.stats{grid-template-columns:1fr 1fr;gap:6px}}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 <div class="app">
-
-<!-- LOGIN -->
-<div id="loginBox" class="login-wrap">
-<div class="login-card">
-<div style="text-align:center;margin-bottom:24px">
-<div class="logo" style="font-size:26px">ADMIN <span>REVENDEDOR</span></div>
-<div class="sub">PANEL PROFESIONAL • GESTIÓN COMPLETA</div>
-<div style="margin-top:12px;display:inline-flex;background:#eef2ff;color:#4f46e5;padding:6px 12px;border-radius:999px;font-size:10px;font-weight:700">ACCESO RESTRINGIDO</div>
-</div>
-<div class="label">Usuario Admin</div>
-<input class="input" id="user" placeholder="Javi" value="Javi">
+<div id="loginBox" class="login-wrap"><div class="card"><div style="text-align:center;margin-bottom:20px"><div class="logo">ADMIN <span>v3.3 SEGURO</span></div><div style="font-size:10px;color:#fff;background:#111827;padding:6px 12px;border-radius:999px;display:inline-block;margin-top:8px;font-weight:700">🔒 ENCRIPTADO + ESCRIBIR + 0 + BORRAR</div><div style="margin-top:10px;font-size:10px;color:#6b7280">Escribí tu usuario admin - te sugiere automáticamente</div></div>
+<div class="label">Usuario Admin - escribí para entrar</div>
+<div class="input-wrap"><input class="input" id="user" placeholder="Escribí tu usuario" oninput="buscarSugAdmin(this.value)" autocomplete="username" value="Javi"><div id="sugAdminLogin" class="sug"></div></div>
 <div class="label">Contraseña</div>
-<input class="input" id="pass" type="password" placeholder="••••••••" value="Romelia12">
-<button class="btn btn-primary" onclick="login()">🔐 Entrar al Panel</button>
-<p id="err" style="color:#dc2626;font-size:12px;margin-top:12px;display:none;text-align:center;background:#fef2f2;border:1px solid #fecaca;padding:10px;border-radius:10px"></p>
-<div style="margin-top:16px;text-align:center;font-size:10px;color:#9ca3af">Usuario: Javi • Contraseña: Romelia12</div>
+<div class="input-wrap"><input class="input" id="pass" type="password" placeholder="••••••••" autocomplete="current-password" value=""><span onclick="let i=document.getElementById('pass');i.type=i.type==='password'?'text':'password'" style="position:absolute;right:12px;top:50%;transform:translateY(-60%);cursor:pointer">👁️</span></div>
+<button class="btn btn-primary" onclick="login()">🔐 Entrar Seguro</button>
+<p id="err" style="color:#991b1b;font-size:12px;margin-top:10px;display:none;text-align:center;background:#fef2f2;border:1px solid #fecaca;padding:10px;border-radius:10px"></p>
+<div style="margin-top:12px;font-size:10px;color:#6b7280;background:#f9fafb;border:1px dashed #e5e7eb;border-radius:10px;padding:10px;line-height:1.5">
+🔒 <b>Seguridad nueva:</b> Pass encriptadas SHA-256, no se muestran en listas, login escribible con sugerencias, bloqueo 5 intentos = 5 min, múltiples admins.
 </div>
-</div>
+</div></div>
 
-<!-- PANEL -->
 <div id="panel" class="hidden">
-<div class="header">
-<div><div class="logo">ADMIN <span>REVENDEDOR</span></div><div class="sub">JAVI • CONTROL TOTAL DE AGENTES Y CLIENTES</div></div>
-<div style="display:flex;gap:8px;align-items:center"><div style="background:#111827;color:white;padding:6px 12px;border-radius:999px;font-size:10px;font-weight:700" id="liveCount">0 ONLINE</div><button onclick="logout()" class="btn btn-ghost" style="padding:8px 12px;width:auto;font-size:11px">Salir</button></div>
-</div>
-
+<div class="header"><div><div class="logo">ADMIN <span>v3.3 SEGURO</span></div><div style="font-size:10px;color:#6b7280">SEGURO • <span id="adminTag">Javi</span> • 0 + BORRAR + ESCRIBIR</div></div><div style="display:flex;gap:8px;align-items:center"><div id="liveCount" style="background:#111827;color:white;padding:6px 12px;border-radius:999px;font-size:10px;font-weight:700">0</div><button onclick="logout()" class="btn btn-ghost" style="width:auto;padding:8px 12px;font-size:11px;min-height:32px">Salir</button></div></div>
 <div class="stats" id="stats"></div>
+<div class="nav"><div class="n-tab active" onclick="showTab('agentes',this)">🤝 Agentes</div><div class="n-tab" onclick="showTab('clientes',this)">👥 Clientes</div><div class="n-tab" onclick="showTab('cargar',this)">📦 Cargar</div><div class="n-tab" onclick="showTab('retiros',this)">💸 Retiros</div><div class="n-tab" onclick="showTab('admins',this)">🔒 Admins</div></div>
 
-<div class="nav">
-<div class="n-tab active" onclick="showTab('agentes',this)">🤝 Agentes</div>
-<div class="n-tab" onclick="showTab('clientes',this)">👥 Clientes</div>
-<div class="n-tab" onclick="showTab('cargar',this)">📦 Cargar Cartón</div>
-<div class="n-tab" onclick="showTab('retiros',this)">💸 Retiros</div>
-<div class="n-tab" onclick="showTab('config',this)">⚙️ Config</div>
-</div>
+<div id="tab-agentes"><div class="card"><b>🤝 Crear Agente Seguro (0 permitido)</b><div class="hint">🔒 Pass se guarda encriptada SHA-256. No se ve en lista. 0, 5, 10, 50, 100 o personalizado.</div><div class="row"><input class="input" id="agUser" placeholder="Usuario agente ej: carlos"><input class="input" id="agPass" type="password" placeholder="Pass min 4 caracteres"></div><div style="display:flex;gap:6px;align-items:flex-end"><input class="input" id="agCart" type="number" value="0" min="0" placeholder="0 = sin stock" style="flex:1;margin-bottom:0"><button class="btn btn-ghost btn-sm" style="min-width:40px" onclick="document.getElementById('agCart').value='0'">0</button><button class="btn btn-ghost btn-sm" style="min-width:40px" onclick="document.getElementById('agCart').value='10'">10</button><button class="btn btn-ghost btn-sm" style="min-width:40px" onclick="document.getElementById('agCart').value='50'">50</button></div><div style="height:10px"></div><button class="btn btn-indigo" onclick="crearAgente()">✅ Crear Agente Seguro (0 o con cartones)</button></div><div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><b>📋 Agentes - Pass ocultas 🔒</b><span id="countAg" style="font-size:11px;color:#6b7280">0</span></div><div id="listaAgentes"></div></div></div>
 
-<!-- AGENTES -->
-<div id="tab-agentes">
-<div class="card">
-<div class="card-title"><b>🤝 Crear Agente Autorizado</b><span class="badge badge-agent">Solo cartones</span></div>
-<div class="hint">El agente vende cartones a sus clientes. Vos le das cartones, él los distribuye. Su usuario y contraseña los usa para entrar a su panel.</div>
-<div class="label">Datos del Agente</div>
-<div class="row"><input class="input" id="agUser" placeholder="Usuario agente ej: carlos"><input class="input" id="agPass" placeholder="Contraseña ej: carlos123"></div>
-<div class="label">Stock inicial</div>
-<input class="input" id="agCart" type="number" value="50" placeholder="Cartones iniciales">
-<button class="btn btn-indigo" onclick="crearAgente()">✅ Crear Agente Autorizado</button>
-</div>
+<div id="tab-clientes" class="hidden"><div class="card"><b>👥 Crear Cliente Seguro (0 permitido)</b><div class="hint">🔒 Pass encriptada. Podés crear con 0 para registrar y cargar después.</div><div class="row"><input class="input" id="clUser" placeholder="Usuario cliente ej: juan123"><input class="input" id="clPass" type="password" placeholder="Pass min 4"></div><div class="row"><select class="input" id="clAgente"><option value="">👑 Directo</option></select><div style="display:flex;gap:4px"><input class="input" id="clCart" type="number" value="0" min="0" placeholder="0" style="flex:1;margin-bottom:0"><button class="btn btn-ghost btn-sm" style="min-width:36px" onclick="document.getElementById('clCart').value='0'">0</button><button class="btn btn-ghost btn-sm" style="min-width:36px" onclick="document.getElementById('clCart').value='5'">5</button></div></div><button class="btn btn-primary" onclick="crearCliente()">✅ Crear Cliente Seguro</button></div><div class="card"><input class="input" id="buscarCl" placeholder="🔍 Filtrar usuario..." oninput="renderClientes()"><div id="listaClientes"></div></div></div>
 
-<div class="card">
-<div class="card-title"><b>📋 Agentes Activos</b><span style="font-size:11px;color:#6b7280" id="countAg">0 agentes</span></div>
-<div class="label">Toca el agente para cargarle cartones o ver sus clientes</div>
-<div id="listaAgentes"></div>
-</div>
-</div>
+<div id="tab-cargar" class="hidden"><div class="card" style="border-color:#4f46e5;border-width:2px"><b>📦 Cargar a Cliente - ESCRIBIR USUARIO</b><div class="hint">✍️ Escribí el usuario y te sugiere automáticamente. Toca de la lista también.</div><div class="input-wrap"><input class="input" id="selCliCarga" placeholder="Escribí usuario ej: juan123" oninput="buscarSugCarga(this.value)" autocomplete="off"><div id="sugCarga" class="sug"></div></div><div id="selCarga" class="selected-box cart"></div><div class="row"><input class="input" id="cantCarga" type="number" min="1" placeholder="Cant cartones"><input class="input" id="notaCarga" placeholder="Nota opcional"></div><button class="btn btn-indigo" onclick="cargarCarton()">🎲 Cargar Cartón al Escrito</button><div style="display:flex;gap:6px;margin-top:8px"><button class="btn btn-ghost btn-sm" onclick="setCant('carga',1)">+1</button><button class="btn btn-ghost btn-sm" onclick="setCant('carga',5)">+5</button><button class="btn btn-ghost btn-sm" onclick="setCant('carga',10)">+10</button><button class="btn btn-ghost btn-sm" onclick="setCant('carga',50)">+50</button></div></div><div class="card" style="border-color:#111827;border-width:2px"><b>🤝 Cargar a Agente - ESCRIBIR</b><div class="input-wrap"><input class="input" id="selAgCarga" placeholder="Escribí agente ej: carlos" oninput="buscarSugAg(this.value)" autocomplete="off"><div id="sugAg" class="sug"></div></div><div id="selAgBox" class="selected-box cart"></div><input class="input" id="cantAgCarga" type="number" min="1" placeholder="Cantidad"><button class="btn btn-primary" onclick="cargarAgenteCart()">📦 Cargar a Agente Escrito</button></div><div class="card"><input class="input" id="buscarCarga" placeholder="🔍 Filtrar clientes para tocar..." oninput="renderCargarLista()"><div id="listaCargar"></div></div></div>
 
-<!-- CLIENTES -->
-<div id="tab-clientes" class="hidden">
-<div class="card">
-<div class="card-title"><b>👥 Crear Cliente con Usuario</b><span class="badge badge-direct">Directo o con agente</span></div>
-<div class="hint">El cliente necesita usuario y contraseña para jugar. Podés asignarlo a un agente o dejarlo directo tuyo.</div>
-<div class="label">Acceso del cliente</div>
-<div class="row"><input class="input" id="clUser" placeholder="Usuario cliente ej: juan123"><input class="input" id="clPass" placeholder="Contraseña ej: 1234"></div>
-<div class="label">Asignación y cartones</div>
-<div class="row"><select class="input" id="clAgente"><option value="">👑 Cliente Directo (sin agente)</option></select><input class="input" id="clCart" type="number" value="5" placeholder="Cartones iniciales"></div>
-<button class="btn btn-primary" onclick="crearCliente()">✅ Crear Cliente</button>
-</div>
+<div id="tab-retiros" class="hidden"><div class="card" style="border-color:#059669;border-width:2px"><b>💸 Retiros - ESCRIBIR USUARIO</b><div class="input-wrap"><input class="input" id="selRetiro" placeholder="Escribí usuario con premio" oninput="buscarSugRetiro(this.value)" autocomplete="off"><div id="sugRetiro" class="sug"></div></div><div id="selRetiroBox" class="selected-box pay"></div><div class="row"><input class="input" id="montoRetiro" readonly placeholder="Monto auto"><input class="input" id="notaRetiro" placeholder="Nota pago"></div><button class="btn btn-success" onclick="pagarPremioSel()">✅ Confirmar Pago al Escrito</button></div><div class="card"><div id="listaRetiros"></div><div id="histPagados" style="margin-top:12px"></div></div></div>
 
-<div class="card">
-<div class="card-title"><b>👥 Todos los Clientes</b><span class="badge badge-cart" id="countCl">0 clientes</span></div>
-<div class="label">Toca cualquier cliente para cargar cartón o retirar premio</div>
-<input class="input" id="buscarCl" placeholder="🔍 Escribir usuario para filtrar..." oninput="renderClientes()">
-<div id="listaClientes" style="margin-top:10px"></div>
-</div>
-</div>
-
-<!-- CARGAR CARTON -->
-<div id="tab-cargar" class="hidden">
-<div class="card" style="border-color:#4f46e5;border-width:2px">
-<div class="card-title"><b>📦 Cargar Cartón a Cliente</b><span class="badge badge-agent">Toque o escritura</span></div>
-<div class="hint">1. Escribí el usuario y te sugiere • 2. O tocá un cliente de la lista abajo • Evita errores de nombre</div>
-<div class="label">Seleccionar cliente</div>
-<div class="input-wrap"><input class="input" id="selCliCarga" placeholder="Escribí usuario ej: juan123" oninput="buscarSugCarga(this.value)" autocomplete="off"><div id="sugCarga" class="sug"></div></div>
-<div id="selCarga" class="selected-box cart"></div>
-<div class="label">Cantidad y nota</div>
-<div class="row"><input class="input" id="cantCarga" type="number" placeholder="Ej: 10"><input class="input" id="notaCarga" placeholder="Nota opcional ej: promo"></div>
-<button class="btn btn-indigo" onclick="cargarCarton()">🎲 Cargar Cartón al Seleccionado</button>
-<div style="display:flex;gap:8px;margin-top:10px"><button class="btn btn-ghost btn-sm" onclick="setCant('carga',5)">+5</button><button class="btn btn-ghost btn-sm" onclick="setCant('carga',10)">+10</button><button class="btn btn-ghost btn-sm" onclick="setCant('carga',20)">+20</button><button class="btn btn-ghost btn-sm" onclick="setCant('carga',50)">+50</button></div>
-</div>
-
-<div class="card" style="border-color:#111827;border-width:2px">
-<div class="card-title"><b>🤝 Cargar Cartón a Agente</b><span class="badge badge-direct">Stock agente</span></div>
-<div class="label">Seleccionar agente</div>
-<div class="input-wrap"><input class="input" id="selAgCarga" placeholder="Escribí usuario agente ej: carlos" oninput="buscarSugAg(this.value)" autocomplete="off"><div id="sugAg" class="sug"></div></div>
-<div id="selAgBox" class="selected-box cart"></div>
-<input class="input" id="cantAgCarga" type="number" placeholder="Cantidad cartones para el agente">
-<button class="btn btn-primary" onclick="cargarAgenteCart()">📦 Cargar Cartones a Agente</button>
-</div>
-
-<div class="card">
-<div class="card-title"><b>👥 Lista rápida - Toca para cargar</b></div>
-<input class="input" id="buscarCarga" placeholder="🔍 Filtrar clientes..." oninput="renderCargarLista()">
-<div id="listaCargar" style="max-height:380px;overflow-y:auto"></div>
-</div>
-</div>
-
-<!-- RETIROS -->
-<div id="tab-retiros" class="hidden">
-<div class="card" style="border-color:#059669;border-width:2px">
-<div class="card-title"><b>💸 Retirar Premio a Cliente</b><span class="badge badge-pay">Solo con saldo</span></div>
-<div class="hint">Solo aparecen clientes que tienen saldo por pagar. Escribí o tocá para seleccionar y pagar.</div>
-<div class="label">Seleccionar cliente con premio</div>
-<div class="input-wrap"><input class="input" id="selRetiro" placeholder="Escribí usuario con premio" oninput="buscarSugRetiro(this.value)" autocomplete="off"><div id="sugRetiro" class="sug"></div></div>
-<div id="selRetiroBox" class="selected-box pay"></div>
-<div class="label">Monto a pagar</div>
-<div class="row"><input class="input" id="montoRetiro" placeholder="Se completa automático" readonly><input class="input" id="notaRetiro" placeholder="Nota: pagado en..."></div>
-<button class="btn btn-success" onclick="pagarPremioSel()">✅ Confirmar Pago al Seleccionado</button>
-</div>
-
-<div class="card">
-<div class="card-title"><b>🏆 Premios por Pagar - Toca para seleccionar</b><span class="badge badge-pay" id="countRetiros">0 pendientes</span></div>
-<input class="input" id="buscarRetiro" placeholder="🔍 Filtrar..." oninput="renderRetiros()">
-<div id="listaRetiros"></div>
-</div>
-
-<div class="card">
-<div class="card-title"><b>📜 Historial de Pagos Realizados</b></div>
-<div id="histPagados"></div>
-</div>
-</div>
-
-<!-- CONFIG -->
-<div id="tab-config" class="hidden">
-<div class="card">
-<div class="card-title"><b>⚙️ Configuración Profesional</b></div>
-<div class="label">Panel organizado</div>
-<div style="display:grid;gap:10px;font-size:13px;color:#374151;line-height:1.6">
-<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f4f6"><span>🔐 Login Admin</span><b>Javi / Romelia12</b></div>
-<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f4f6"><span>🤝 Agentes</span><span>Crean clientes y venden cartones</span></div>
-<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f4f6"><span>👥 Clientes</span><span>Usuario + Pass obligatorios</span></div>
-<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f4f6"><span>📦 Cargar</span><span>Escribir o tocar (sin error)</span></div>
-<div style="display:flex;justify-content:space-between;padding:10px 0"><span>💸 Retiros</span><span>Escribir o tocar + confirmación</span></div>
-</div>
-<div class="divider"></div>
-<div class="hint">Diseño limpio, colores profesionales, sin saturación. Todo está separado por secciones para que no te confundas. Cualquier duda, el sistema te guía con toques.</div>
-<button class="btn btn-ghost" onclick="alert('Panel Javi v2.0 - Profesional\\nLogin: Javi / Romelia12')">ℹ️ Info del Sistema</button>
-</div>
-</div>
+<div id="tab-admins" class="hidden"><div class="card"><b>🔒 Admins Seguros - Múltiples usuarios</b><div class="hint">Creá más admins. Cada uno entra escribiendo su usuario. Pass encriptadas SHA-256. Tu primer admin es Javi / Romelia12 migrado a seguro.</div><div class="row"><input class="input" id="newAdminUser" placeholder="Nuevo usuario admin"><input class="input" id="newAdminPass" type="password" placeholder="Pass min 6"></div><button class="btn btn-primary" onclick="crearAdmin()">🔒 Crear Admin Seguro</button><div style="margin-top:12px" id="listaAdmins"></div><div class="hint" style="margin-top:12px">Si tenés agentes/clientes viejos con pass en texto plano, usá migrar para encriptarlos.</div><button class="btn btn-ghost" onclick="migrarPassViejas()">🔄 Migrar pass viejas a encriptadas SHA-256</button></div></div>
 
 </div>
 </div>
 
 <script>
 const firebaseConfig={apiKey:"AIzaSyBVYB9BRSMPR4S6QpogWGnSSqwFCI1-bh8",authDomain:"raspaygana-fdacb.firebaseapp.com",projectId:"raspaygana-fdacb",storageBucket:"raspaygana-fdacb.firebasestorage.app",messagingSenderId:"851746213050",appId:"1:851746213050:web:f27c58c79af81caedb4683"};
-firebase.initializeApp(firebaseConfig); const db=firebase.firestore();
+firebase.initializeApp(firebaseConfig);const db=firebase.firestore();
 let cacheAgents={},cacheAgentsData={},cacheUsers={},cacheUsersData={},selectedCarga=null,selectedRetiro=null,selectedAg=null;
 
-function login(){
+async function hashPass(text){
+  const enc = new TextEncoder().encode(text);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function login(){
   let u=document.getElementById('user').value.trim();
   let p=document.getElementById('pass').value.trim();
   let err=document.getElementById('err');
-  if(u==='Javi' && p==='Romelia12'){
+  let now=Date.now();
+  let intentos=parseInt(localStorage.getItem('rv_javi_intentos')||'0');
+  let bloqueo=parseInt(localStorage.getItem('rv_javi_bloqueo')||'0');
+  if(now < bloqueo){
+    let seg=Math.ceil((bloqueo-now)/1000);
+    err.style.display='block';
+    err.textContent=`🔒 Bloqueado ${seg}s - 5 intentos fallidos`;
+    return;
+  }
+  if(!u||!p){err.style.display='block'; err.textContent='Poné usuario y pass'; return;}
+  try{
+    let snap=await db.collection('config').doc('admins').get();
+    let lista=[];
+    if(snap.exists && snap.data().lista){
+      lista=snap.data().lista;
+    } else {
+      // Crear primer admin Javi / Romelia12 seguro
+      let h=await hashPass('Romelia12');
+      lista=[{user:'Javi', passHash:h, created:new Date().toLocaleString()}];
+      await db.collection('config').doc('admins').set({lista});
+    }
+    let found=lista.find(a=>a.user.toLowerCase()===u.toLowerCase());
+    // Compatibilidad con admin viejo sin hash
+    if(!found && u.toLowerCase()==='javi' && p==='Romelia12'){
+      found={user:'Javi', passHash: await hashPass('Romelia12')};
+      lista.push(found);
+      await db.collection('config').doc('admins').set({lista});
+    }
+    if(!found){
+      intentos++; localStorage.setItem('rv_javi_intentos',intentos);
+      if(intentos>=5) localStorage.setItem('rv_javi_bloqueo', Date.now()+5*60*1000);
+      err.style.display='block'; err.textContent='❌ Usuario admin no existe. Escribí Javi o creá uno nuevo';
+      return;
+    }
+    let hp=await hashPass(p);
+    if(hp!==found.passHash){
+      intentos++; localStorage.setItem('rv_javi_intentos',intentos);
+      if(intentos>=5){ localStorage.setItem('rv_javi_bloqueo', Date.now()+5*60*1000); err.textContent=`🔒 5 fallos - bloqueado 5 min`; }
+      else { err.textContent=`❌ Pass incorrecta - intento ${intentos}/5`; }
+      err.style.display='block';
+      return;
+    }
+    localStorage.setItem('rv_javi','1');
+    localStorage.setItem('rv_javi_user', found.user);
+    localStorage.setItem('rv_javi_intentos','0');
+    localStorage.setItem('rv_javi_bloqueo','0');
     document.getElementById('loginBox').style.display='none';
     document.getElementById('panel').classList.remove('hidden');
-    localStorage.setItem('rv_javi','1');
+    document.getElementById('adminTag').textContent=found.user;
     init();
-  }else{
-    err.style.display='block';
-    err.textContent='❌ Usuario o contraseña incorrectos. Usa Javi / Romelia12';
-  }
+  }catch(e){ err.style.display='block'; err.textContent='Error: '+e.message; }
 }
+
 function logout(){localStorage.removeItem('rv_javi');location.reload();}
-function showTab(t,el){
-  document.querySelectorAll('.n-tab').forEach(x=>x.classList.remove('active'));
-  el.classList.add('active');
-  ['agentes','clientes','cargar','retiros','config'].forEach(k=>document.getElementById('tab-'+k).classList.add('hidden'));
-  document.getElementById('tab-'+t).classList.remove('hidden');
-  if(t==='cargar') renderCargarLista();
-  if(t==='retiros') renderRetiros();
-  if(t==='clientes') renderClientes();
+function showTab(t,el){document.querySelectorAll('.n-tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');['agentes','clientes','cargar','retiros','admins'].forEach(k=>document.getElementById('tab-'+k).classList.add('hidden'));document.getElementById('tab-'+t).classList.remove('hidden');if(t==='cargar')renderCargarLista();if(t==='retiros')renderRetiros();if(t==='clientes')renderClientes();if(t==='admins')renderAdmins();}
+async function init(){await loadAll();renderStats();renderAgentes();renderClientes();renderCargarLista();renderRetiros();renderAdmins();}
+async function loadAll(){cacheAgents={};cacheAgentsData={};cacheUsers={};cacheUsersData={};let ag=await db.collection('agents').get();let agd=await db.collection('agents_data').get();let us=await db.collection('users').get();let usd=await db.collection('users_data').get();ag.forEach(d=>cacheAgents[d.id]=d.data());agd.forEach(d=>cacheAgentsData[d.id]=d.data());us.forEach(d=>cacheUsers[d.id]=d.data());usd.forEach(d=>cacheUsersData[d.id]=d.data());}
+function renderStats(){let ta=Object.keys(cacheAgents).length;let tc=Object.keys(cacheUsers).length;let cartAg=Object.values(cacheAgentsData).reduce((a,b)=>a+(b.cartones||0),0);let porPagar=Object.values(cacheUsersData).reduce((a,b)=>a+(b.saldo||0),0);document.getElementById('stats').innerHTML=`<div class="stat"><b>${ta}</b><span>Agentes</span></div><div class="stat"><b>${tc}</b><span>Clientes</span></div><div class="stat"><b>${cartAg}</b><span>Stock</span></div><div class="stat"><b style="color:${porPagar>0?'#059669':'#111827'}">${porPagar>0?porPagar.toLocaleString():'0'}</b><span>Por pagar</span></div>`;document.getElementById('liveCount').textContent=tc+' CLIENTES';document.getElementById('countAg').textContent=ta+' agentes';}
+function setCant(tipo,n){let el=document.getElementById('cantCarga');let cur=parseInt(el.value)||0;el.value=cur+n;}
+function seleccionarCarga(uid){selectedCarga=uid;document.getElementById('selCliCarga').value=uid;let d=cacheUsersData[uid]||{cartones:0,saldo:0};let ag=cacheUsers[uid]?.agent||'Directo';let box=document.getElementById('selCarga');box.style.display='block';box.innerHTML=`✅ ${uid} • ${ag} • ${d.cartones||0}c • ${d.saldo.toLocaleString()} GS`;document.getElementById('sugCarga').style.display='none';}
+function seleccionarAg(uid){selectedAg=uid;document.getElementById('selAgCarga').value=uid;let d=cacheAgentsData[uid]||{cartones:0};let box=document.getElementById('selAgBox');box.style.display='block';box.innerHTML=`✅ ${uid} • ${d.cartones||0}c stock`;document.getElementById('sugAg').style.display='none';}
+function seleccionarRetiro(uid){selectedRetiro=uid;document.getElementById('selRetiro').value=uid;let d=cacheUsersData[uid]||{saldo:0};let ag=cacheUsers[uid]?.agent||'Directo';let box=document.getElementById('selRetiroBox');box.style.display='block';box.innerHTML=`🏆 ${uid} • ${ag} • ${d.saldo.toLocaleString()} GS`;document.getElementById('montoRetiro').value=d.saldo.toLocaleString()+' GS';document.getElementById('sugRetiro').style.display='none';}
+function buscarSugCarga(q){let box=document.getElementById('sugCarga');if(!q){box.style.display='none';return;}q=q.toLowerCase();let m=Object.keys(cacheUsers).filter(id=>id.toLowerCase().includes(q)).slice(0,8);if(!m.length){box.style.display='none';return;}box.innerHTML=m.map(id=>{let d=cacheUsersData[id]||{cartones:0};return `<div onclick="seleccionarCarga('${id}')"><span><b>${id}</b></span><span>${d.cartones||0}c</span></div>`;}).join('');box.style.display='block';}
+function buscarSugAg(q){let box=document.getElementById('sugAg');if(!q){box.style.display='none';return;}q=q.toLowerCase();let m=Object.keys(cacheAgents).filter(id=>id.toLowerCase().includes(q)).slice(0,8);if(!m.length){box.style.display='none';return;}box.innerHTML=m.map(id=>{let d=cacheAgentsData[id]||{cartones:0};return `<div onclick="seleccionarAg('${id}')"><span><b>${id}</b></span><span>${d.cartones||0}c</span></div>`;}).join('');box.style.display='block';}
+function buscarSugRetiro(q){let box=document.getElementById('sugRetiro');if(!q){box.style.display='none';return;}q=q.toLowerCase();let m=Object.keys(cacheUsersData).filter(id=>(cacheUsersData[id].saldo||0)>0&&id.toLowerCase().includes(q)).slice(0,8);if(!m.length){box.style.display='none';return;}box.innerHTML=m.map(id=>{let d=cacheUsersData[id]||{saldo:0};return `<div onclick="seleccionarRetiro('${id}')"><span><b>${id}</b></span><b>${d.saldo.toLocaleString()} GS</b></div>`;}).join('');box.style.display='block';}
+async function buscarSugAdmin(q){
+  let box=document.getElementById('sugAdminLogin');
+  if(!q){box.style.display='none';return;}
+  try{
+    let snap=await db.collection('config').doc('admins').get();
+    if(!snap.exists){box.style.display='none';return;}
+    let lista=snap.data().lista||[];
+    q=q.toLowerCase();
+    let m=lista.filter(a=>a.user.toLowerCase().includes(q)).slice(0,6);
+    if(!m.length){box.style.display='none';return;}
+    box.innerHTML=m.map(a=>`<div onclick="seleccionarAdminLogin('${a.user}')"><span><b>👑 ${a.user}</b></span><span style="font-size:10px;color:#6b7280">🔒 Seguro</span></div>`).join('');
+    box.style.display='block';
+  }catch{ box.style.display='none'; }
 }
-async function init(){await loadAll();renderStats();renderAgentes();renderClientes();renderCargarLista();renderRetiros();}
-async function loadAll(){
-  cacheAgents={};cacheAgentsData={};cacheUsers={};cacheUsersData={};
-  let ag=await db.collection('agents').get();let agd=await db.collection('agents_data').get();
-  let us=await db.collection('users').get();let usd=await db.collection('users_data').get();
-  ag.forEach(d=>cacheAgents[d.id]=d.data());agd.forEach(d=>cacheAgentsData[d.id]=d.data());
-  us.forEach(d=>cacheUsers[d.id]=d.data());usd.forEach(d=>cacheUsersData[d.id]=d.data());
-}
-function renderStats(){
-  let ta=Object.keys(cacheAgents).length;let tc=Object.keys(cacheUsers).length;
-  let cartAg=Object.values(cacheAgentsData).reduce((a,b)=>a+(b.cartones||0),0);
-  let porPagar=Object.values(cacheUsersData).reduce((a,b)=>a+(b.saldo||0),0);
-  let pendientes=Object.values(cacheUsersData).filter(d=>d.saldo>0).length;
-  document.getElementById('stats').innerHTML=`
-    <div class="stat"><b>${ta}</b><span>Agentes</span></div>
-    <div class="stat"><b>${tc}</b><span>Clientes</span></div>
-    <div class="stat"><b>${cartAg}</b><span>Stock Cartones</span></div>
-    <div class="stat"><b style="color:${porPagar>0?'#059669':'#111827'}">${porPagar>0?porPagar.toLocaleString():'0'}</b><span>Por pagar GS</span></div>`;
-  document.getElementById('liveCount').textContent=tc+' CLIENTES';
-  document.getElementById('countAg').textContent=ta+' agentes';
-  document.getElementById('countCl').textContent=tc+' clientes';
-  document.getElementById('countRetiros').textContent=pendientes+' pendientes';
-}
-function setCant(tipo,n){if(tipo==='carga') document.getElementById('cantCarga').value=n;}
+function seleccionarAdminLogin(user){document.getElementById('user').value=user;document.getElementById('sugAdminLogin').style.display='none';document.getElementById('pass').focus();}
 
-// SELECCIONES
-function seleccionarCarga(uid){
-  selectedCarga=uid;document.getElementById('selCliCarga').value=uid;
-  let d=cacheUsersData[uid]||{cartones:0,saldo:0};let ag=cacheUsers[uid]?.agent||'Directo';
-  let box=document.getElementById('selCarga');box.style.display='block';
-  box.innerHTML=`✅ Seleccionado para cargar: <b>${uid}</b> • ${ag} • ${d.cartones||0} cartones • ${d.saldo.toLocaleString()} GS premio`;
-  document.getElementById('sugCarga').style.display='none';
-  if(navigator.vibrate) navigator.vibrate(20);
+async function crearAgente(){
+  let u=document.getElementById('agUser').value.trim().toLowerCase();
+  let p=document.getElementById('agPass').value.trim();
+  let cartVal=document.getElementById('agCart').value;
+  let cart=cartVal==='' ? 0 : parseInt(cartVal);
+  if(isNaN(cart)) cart=0;
+  if(!u||!p){alert('Usuario y pass requeridos');return}
+  if(p.length<4){alert('Pass min 4 caracteres por seguridad');return}
+  if(cart<0){alert('No negativo');return}
+  let ex=await db.collection('agents').doc(u).get();
+  if(ex.exists){alert('Agente ya existe');return}
+  let h=await hashPass(p);
+  await db.collection('agents').doc(u).set({name:u,passHash:h,cartones:cart,created:new Date().toLocaleString(),createdBy:localStorage.getItem('rv_javi_user')||'Javi'});
+  await db.collection('agents_data').doc(u).set({cartones:cart,hist:[{fecha:new Date().toLocaleString(),detalle: cart>0?`Creado con ${cart}c`:'Creado con 0c'}]});
+  alert(`✅ Agente ${u} creado SEGURO con ${cart}c - Pass encriptada`);
+  document.getElementById('agUser').value='';document.getElementById('agPass').value='';document.getElementById('agCart').value='0';
+  await loadAll();renderStats();renderAgentes();
 }
-function seleccionarAg(uid){
-  selectedAg=uid;document.getElementById('selAgCarga').value=uid;
-  let d=cacheAgentsData[uid]||{cartones:0};
-  let box=document.getElementById('selAgBox');box.style.display='block';
-  box.innerHTML=`✅ Agente seleccionado: <b>${uid}</b> • ${d.cartones||0} cartones en stock`;
-  document.getElementById('sugAg').style.display='none';
+async function crearCliente(){
+  let u=document.getElementById('clUser').value.trim().toLowerCase();
+  let p=document.getElementById('clPass').value.trim()||'1234';
+  let agente=document.getElementById('clAgente').value;
+  let cartVal=document.getElementById('clCart').value;
+  let cart=cartVal==='' ? 0 : parseInt(cartVal);
+  if(isNaN(cart)) cart=0;
+  if(!u||!p){alert('Usuario y pass');return}
+  if(p.length<4){alert('Pass min 4 caracteres');return}
+  if(cart<0) cart=0;
+  let ex=await db.collection('users').doc(u).get();
+  if(ex.exists){alert('Cliente ya existe');return}
+  if(agente && cart>0){
+    let agd=cacheAgentsData[agente];
+    if(!agd||(agd.cartones||0)<cart){alert(`Agente ${agente} sin stock ${agd?.cartones||0}. Crealo con 0.`);return}
+    agd.cartones-=cart;await db.collection('agents_data').doc(agente).set(agd,{merge:true});
+  }
+  let h=await hashPass(p);
+  await db.collection('users').doc(u).set({name:u,passHash:h,agent:agente||'',availableCartons:cart,created:new Date().toLocaleString()});
+  await db.collection('users_data').doc(u).set({saldo:0,cartones:cart,ganados:0,hist:[{fecha:new Date().toLocaleString(),detalle:`Creado ${agente?agente:'directo'} ${cart}c`,monto:0}],agent:agente||''});
+  alert(`✅ Cliente ${u} creado SEGURO con ${cart}c`);
+  document.getElementById('clUser').value='';document.getElementById('clPass').value='';document.getElementById('clCart').value='0';
+  await loadAll();renderStats();renderClientes();renderCargarLista();
 }
-function seleccionarRetiro(uid){
-  selectedRetiro=uid;document.getElementById('selRetiro').value=uid;
-  let d=cacheUsersData[uid]||{saldo:0};let ag=cacheUsers[uid]?.agent||'Directo';
-  let box=document.getElementById('selRetiroBox');box.style.display='block';
-  box.innerHTML=`🏆 Para pagar premio: <b>${uid}</b> • ${ag} • <b>${(d.saldo||0).toLocaleString()} GS</b>`;
-  document.getElementById('montoRetiro').value=(d.saldo||0).toLocaleString()+' GS';
-  document.getElementById('sugRetiro').style.display='none';
-  if(navigator.vibrate) navigator.vibrate([30,30,60]);
+async function borrarCliente(id){
+  let d=cacheUsersData[id]||{cartones:0,saldo:0};
+  if((d.saldo||0)>0){ if(!confirm(`⚠️ ${id} tiene ${d.saldo.toLocaleString()} GS por pagar. ¿Borrar igual?`)) return; }
+  if(!confirm(`🗑️ ¿BORRAR cliente ${id}?`)) return;
+  if(!confirm(`CONFIRMAR borrar ${id} para siempre?`)) return;
+  try{ await db.collection('users').doc(id).delete(); await db.collection('users_data').doc(id).delete(); alert(`🗑️ Cliente ${id} borrado`); await loadAll();renderStats();renderClientes();renderCargarLista();renderRetiros(); }catch(e){alert(e.message)}
 }
-
-// SUGERENCIAS
-function buscarSugCarga(q){let box=document.getElementById('sugCarga');if(!q){box.style.display='none';return;}q=q.toLowerCase();let m=Object.keys(cacheUsers).filter(id=>id.toLowerCase().includes(q)).slice(0,8);if(!m.length){box.style.display='none';return;}box.innerHTML=m.map(id=>{let d=cacheUsersData[id]||{cartones:0};let ag=cacheUsers[id]?.agent||'Directo';return `<div onclick="seleccionarCarga('${id}')"><span><b>${id}</b> • ${ag}</span><span style="color:#6b7280">${d.cartones||0}c</span></div>`;}).join('');box.style.display='block';}
-function buscarSugAg(q){let box=document.getElementById('sugAg');if(!q){box.style.display='none';return;}q=q.toLowerCase();let m=Object.keys(cacheAgents).filter(id=>id.toLowerCase().includes(q)).slice(0,8);if(!m.length){box.style.display='none';return;}box.innerHTML=m.map(id=>{let d=cacheAgentsData[id]||{cartones:0};return `<div onclick="seleccionarAg('${id}')"><span><b>🤝 ${id}</b></span><span style="color:#6b7280">${d.cartones||0} CART</span></div>`;}).join('');box.style.display='block';}
-function buscarSugRetiro(q){let box=document.getElementById('sugRetiro');if(!q){box.style.display='none';return;}q=q.toLowerCase();let m=Object.keys(cacheUsersData).filter(id=>(cacheUsersData[id].saldo||0)>0 && id.toLowerCase().includes(q)).slice(0,8);if(!m.length){box.style.display='none';return;}box.innerHTML=m.map(id=>{let d=cacheUsersData[id]||{saldo:0};let ag=cacheUsers[id]?.agent||'Directo';return `<div onclick="seleccionarRetiro('${id}')"><span><b>${id}</b> • ${ag}</span><b style="color:#059669">${d.saldo.toLocaleString()} GS</b></div>`;}).join('');box.style.display='block';}
-
-// AGENTES
-async function crearAgente(){let u=document.getElementById('agUser').value.trim().toLowerCase();let p=document.getElementById('agPass').value.trim();let cart=parseInt(document.getElementById('agCart').value)||0;if(!u||!p||cart<=0){alert('Completa usuario, contraseña y cartones');return}let ex=await db.collection('agents').doc(u).get();if(ex.exists){alert('Agente ya existe');return}await db.collection('agents').doc(u).set({name:u,pass:p,cartones:cart,created:new Date().toLocaleString()});await db.collection('agents_data').doc(u).set({cartones:cart,hist:[]});alert(`✅ Agente ${u} creado con ${cart} cartones`);document.getElementById('agUser').value='';document.getElementById('agPass').value='';await loadAll();renderStats();renderAgentes();}
-function renderAgentes(){let html='';for(let id in cacheAgents){let d=cacheAgentsData[id]||{cartones:0};let numCl=Object.values(cacheUsers).filter(u=>u.agent===id).length;let isSel=selectedAg===id?' selected':'';html+=`<div class="item${isSel}" onclick="seleccionarAg('${id}')"><div style="display:flex;justify-content:space-between;align-items:center"><div><b>🤝 ${id}</b><div style="font-size:11px;color:#6b7280;margin-top:2px">Pass: ${cacheAgents[id].pass||'***'} • ${numCl} clientes</div></div><span class="badge badge-cart">${d.cartones||0} CART</span></div><div style="display:flex;gap:8px;margin-top:10px"><button class="btn btn-indigo btn-sm" onclick="event.stopPropagation();cargarAgCart('${id}',20)">+20</button><button class="btn btn-indigo btn-sm" onclick="event.stopPropagation();cargarAgCart('${id}',50)">+50</button><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();verClientesAg('${id}')">Ver clientes</button></div></div>`;}document.getElementById('listaAgentes').innerHTML=html||'<div style="text-align:center;color:#9ca3af;padding:20px">Sin agentes aún</div>';let sel='<option value="">👑 Cliente Directo (sin agente)</option>';for(let id in cacheAgents){sel+=`<option value="${id}">🤝 ${id} - ${cacheAgentsData[id]?.cartones||0}c stock</option>`;}document.getElementById('clAgente').innerHTML=sel;}
-async function cargarAgCart(id,n){let d=cacheAgentsData[id]||{cartones:0};d.cartones=(d.cartones||0)+n;await db.collection('agents_data').doc(id).set(d,{merge:true});await db.collection('agents').doc(id).set({cartones:d.cartones},{merge:true});await loadAll();renderStats();renderAgentes();}
-function verClientesAg(id){document.getElementById('buscarCl').value=id;showTab('clientes',document.querySelectorAll('.n-tab')[1]);renderClientes();}
-async function cargarAgenteCart(){let id=document.getElementById('selAgCarga').value.trim().toLowerCase()||selectedAg;let cant=parseInt(document.getElementById('cantAgCarga').value)||0;if(!id||cant<=0){alert('Selecciona agente y cantidad');return}if(!cacheAgents[id]){alert('Agente no existe');return}let d=cacheAgentsData[id]||{cartones:0};d.cartones=(d.cartones||0)+cant;await db.collection('agents_data').doc(id).set(d,{merge:true});await db.collection('agents').doc(id).set({cartones:d.cartones},{merge:true});alert(`✅ ${cant} cartones cargados a agente ${id}`);document.getElementById('cantAgCarga').value='';document.getElementById('selAgBox').style.display='none';selectedAg=null;await loadAll();renderStats();renderAgentes();}
-
-// CLIENTES
-async function crearCliente(){let u=document.getElementById('clUser').value.trim().toLowerCase();let p=document.getElementById('clPass').value.trim()||'1234';let agente=document.getElementById('clAgente').value;let cart=parseInt(document.getElementById('clCart').value)||0;if(!u||!p||cart<=0){alert('Completa usuario, contraseña y cartones');return}let ex=await db.collection('users').doc(u).get();if(ex.exists){alert('Cliente ya existe');return}if(agente){let agd=cacheAgentsData[agente];if(!agd||(agd.cartones||0)<cart){alert(`Agente ${agente} no tiene stock suficiente. Tiene ${agd?.cartones||0}`);return}agd.cartones-=cart;await db.collection('agents_data').doc(agente).set(agd,{merge:true});}
-await db.collection('users').doc(u).set({name:u,pass:p,agent:agente||'',balance:0,availableCartons:cart,created:new Date().toLocaleString()});await db.collection('users_data').doc(u).set({saldo:0,cartones:cart,ganados:0,hist:[{fecha:new Date().toLocaleString(),detalle:`Creado ${agente?'para agente '+agente:'directo'}`,monto:0}],agent:agente||''});alert(`✅ Cliente ${u} creado`);document.getElementById('clUser').value='';document.getElementById('clPass').value='';await loadAll();renderStats();renderClientes();renderCargarLista();}
-function renderClientes(){let q=(document.getElementById('buscarCl')?.value||'').toLowerCase();let html='';for(let id in cacheUsers){if(q&&!id.toLowerCase().includes(q)&&!(cacheUsers[id].agent||'').toLowerCase().includes(q))continue;let u=cacheUsers[id];let d=cacheUsersData[id]||{cartones:0,saldo:0};let tag=u.agent?`<span class="badge badge-agent">🤝 ${u.agent}</span>`:`<span class="badge badge-direct">👑 Directo</span>`;let win=d.saldo>0?' win':'';let selC=selectedCarga===id||selectedRetiro===id?' selected':'';html+=`<div class="item${win}${selC}" onclick="seleccionarCarga('${id}'); seleccionarRetiro('${id}')" ><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><b>👤 ${id}</b><div style="font-size:11px;color:#6b7280;margin-top:3px">Pass: <b style="color:#111827">${u.pass||''}</b> • ${d.cartones||0} cartones</div></div><div style="text-align:right">${tag}<div style="margin-top:6px"><span class="badge ${d.saldo>0?'badge-pay':'badge-cart'}">${d.saldo>0?d.saldo.toLocaleString()+' GS POR PAGAR':d.cartones+' CART'}</span></div></div></div><div style="font-size:10px;color:#4f46e5;margin-top:8px;font-weight:600">👉 TOCA PARA CARGAR CARTÓN O RETIRAR PREMIO</div></div>`;}document.getElementById('listaClientes').innerHTML=html||'<div style="text-align:center;color:#9ca3af;padding:20px">Sin clientes</div>';}
-function renderCargarLista(){let q=(document.getElementById('buscarCarga')?.value||'').toLowerCase();let html='';for(let id in cacheUsers){if(q&&!id.toLowerCase().includes(q))continue;let u=cacheUsers[id];let d=cacheUsersData[id]||{cartones:0,saldo:0};let isSel=selectedCarga===id?' selected':'';html+=`<div class="item${isSel}" onclick="seleccionarCarga('${id}')"><div style="display:flex;justify-content:space-between"><b>${id}</b><span class="badge badge-agent">${u.agent?`🤝 ${u.agent}`:'👑 Directo'}</span></div><div style="display:flex;justify-content:space-between;margin-top:6px;font-size:12px"><span>${d.cartones||0} cartones</span><span style="color:${d.saldo>0?'#059669':'#6b7280'};font-weight:700">${d.saldo>0?d.saldo.toLocaleString()+' GS 🏆':''}</span></div></div>`;}document.getElementById('listaCargar').innerHTML=html||'Sin clientes';}
-
-// CARGAR CARTON CLIENTE
+async function borrarAgente(id){
+  let numCl=Object.values(cacheUsers).filter(u=>u.agent===id).length;
+  if(numCl>0){alert(`No podés borrar ${id} tiene ${numCl} clientes.`);return;}
+  if(!confirm(`🗑️ ¿Borrar agente ${id}?`)) return;
+  if(!confirm(`CONFIRMAR borrar agente ${id}?`)) return;
+  try{ await db.collection('agents').doc(id).delete(); await db.collection('agents_data').doc(id).delete(); alert(`🗑️ Agente ${id} borrado`); await loadAll();renderStats();renderAgentes(); }catch(e){alert(e.message)}
+}
+function renderAgentes(){
+  let html='';
+  for(let id in cacheAgents){
+    let d=cacheAgentsData[id]||{cartones:0};
+    let numCl=Object.values(cacheUsers).filter(u=>u.agent===id).length;
+    let badge=(d.cartones||0)===0?'<span class="badge badge-zero">0 CART</span>':`<span class="badge badge-cart">${d.cartones} CART</span>`;
+    html+=`<div class="item ${selectedAg===id?'selected':''}"><div onclick="seleccionarAg('${id}')" style="cursor:pointer"><div style="display:flex;justify-content:space-between"><b>🤝 ${id}</b>${badge}</div><div style="font-size:11px;color:#6b7280;margin-top:4px">🔒 Pass encriptada • ${numCl} clientes • Por: ${cacheAgents[id].createdBy||'Javi'} • ${d.cartones||0}c</div></div><div style="display:flex;gap:6px;margin-top:10px"><button class="btn btn-indigo btn-sm" onclick="seleccionarAg('${id}')">📦 Cargar</button><button class="btn btn-ghost btn-sm" onclick="resetPassAgente('${id}')">🔑 Reset</button><button class="btn btn-danger btn-sm" onclick="borrarAgente('${id}')">🗑️</button></div></div>`;
+  }
+  document.getElementById('listaAgentes').innerHTML=html||'<div style="text-align:center;color:#9ca3af;padding:20px">Sin agentes</div>';
+  let sel='<option value="">👑 Directo (sin agente)</option>';for(let id in cacheAgents){sel+=`<option value="${id}">🤝 ${id} - ${cacheAgentsData[id]?.cartones||0}c</option>`;}document.getElementById('clAgente').innerHTML=sel;
+}
+function renderClientes(){
+  let q=(document.getElementById('buscarCl')?.value||'').toLowerCase();
+  let html='';
+  for(let id in cacheUsers){
+    if(q&&!id.toLowerCase().includes(q)&&!(cacheUsers[id].agent||'').toLowerCase().includes(q))continue;
+    let u=cacheUsers[id];let d=cacheUsersData[id]||{cartones:0,saldo:0};
+    let badge=(d.cartones||0)===0&&d.saldo===0?'<span class="badge badge-zero">0 CART</span>':d.saldo>0?`<span class="badge badge-pay">${d.saldo.toLocaleString()} GS</span>`:`<span class="badge badge-cart">${d.cartones} CART</span>`;
+    html+=`<div class="item ${selectedCarga===id?'selected':''} ${d.saldo>0?'win':''}"><div onclick="seleccionarCarga('${id}')" style="cursor:pointer"><div style="display:flex;justify-content:space-between"><b>👤 ${id}</b>${badge}</div><div style="font-size:11px;color:#6b7280;margin-top:4px">${u.agent?`🤝 ${u.agent}`:'👑 Directo'} • 🔒 Pass encriptada • ${d.cartones||0}c</div></div><div style="display:flex;gap:6px;margin-top:10px"><button class="btn btn-indigo btn-sm" onclick="seleccionarCarga('${id}')">📦</button><button class="btn btn-ghost btn-sm" onclick="resetPassCliente('${id}')">🔑</button><button class="btn btn-danger btn-sm" onclick="borrarCliente('${id}')">🗑️</button></div></div>`;
+  }
+  document.getElementById('listaClientes').innerHTML=html||'<div style="text-align:center;color:#9ca3af;padding:20px">Sin clientes</div>';
+}
+async function resetPassAgente(id){
+  let np=prompt(`Nueva pass para agente ${id} (min 4):`);
+  if(!np||np.length<4){alert('Cancelado');return}
+  let h=await hashPass(np);
+  await db.collection('agents').doc(id).set({passHash:h},{merge:true});
+  alert(`✅ Pass de agente ${id} reseteada segura`);
+}
+async function resetPassCliente(id){
+  let np=prompt(`Nueva pass para cliente ${id} (min 4):`);
+  if(!np||np.length<4){alert('Cancelado');return}
+  let h=await hashPass(np);
+  await db.collection('users').doc(id).set({passHash:h},{merge:true});
+  alert(`✅ Pass de cliente ${id} reseteada`);
+}
+function renderCargarLista(){
+  let q=(document.getElementById('buscarCarga')?.value||'').toLowerCase();
+  let html='';
+  for(let id in cacheUsers){
+    if(q&&!id.toLowerCase().includes(q))continue;
+    let u=cacheUsers[id];let d=cacheUsersData[id]||{cartones:0,saldo:0};
+    html+=`<div class="item ${selectedCarga===id?'selected':''}" onclick="seleccionarCarga('${id}')"><div style="display:flex;justify-content:space-between"><b>${id} ${(d.cartones||0)===0?'<span style="color:#dc2626">• 0c</span>':''}</b><span class="badge badge-agent">${u.agent?`🤝 ${u.agent}`:'👑 Directo'}</span></div><div style="font-size:12px;color:#6b7280;margin-top:4px;display:flex;justify-content:space-between"><span>${d.cartones||0}c</span><span style="color:${d.saldo>0?'#059669':'#9ca3af'}">${d.saldo>0?d.saldo.toLocaleString()+' GS':''}</span></div></div>`;
+  }
+  document.getElementById('listaCargar').innerHTML=html||'Sin clientes';
+}
 async function cargarCarton(){
   let cli=document.getElementById('selCliCarga').value.trim().toLowerCase()||selectedCarga;
   let cant=parseInt(document.getElementById('cantCarga').value)||0;
-  if(!cli){alert('Escribí o tocá un cliente');return}
-  if(cant<=0){alert('Poné cantidad de cartones');return}
-  if(!cacheUsers[cli]){alert('Usuario no existe: '+cli);return}
-  let u=cacheUsers[cli];let agente=u.agent||'';if(agente){let agd=cacheAgentsData[agente];if(!agd||(agd.cartones||0)<cant){alert(`Agente ${agente} sin stock. Tiene ${agd?.cartones||0}`);return}agd.cartones-=cant;await db.collection('agents_data').doc(agente).set(agd,{merge:true});}
-  let d=cacheUsersData[cli]||{saldo:0,cartones:0,hist:[]};d.cartones=(d.cartones||0)+cant;d.hist=d.hist||[];d.hist.unshift({fecha:new Date().toLocaleString(),detalle:`Carga +${cant} cartones ${agente?'por agente '+agente:''}`,monto:0});await db.collection('users_data').doc(cli).set(d,{merge:true});await db.collection('users').doc(cli).set({availableCartons:d.cartones},{merge:true});
-  alert(`✅ ${cant} cartones cargados a ${cli}`);document.getElementById('cantCarga').value='';document.getElementById('selCarga').style.display='none';selectedCarga=null;await loadAll();renderStats();renderCargarLista();renderClientes();renderRetiros();
+  if(!cli||cant<=0){alert('Selecciona cliente y cantidad >0');return}
+  if(!cacheUsers[cli]){alert('No existe: '+cli);return}
+  let u=cacheUsers[cli];let agente=u.agent||'';
+  if(agente){let agd=cacheAgentsData[agente];if(!agd||(agd.cartones||0)<cant){alert(`Agente ${agente} sin stock ${agd?.cartones||0}. Cargale al agente primero.`);return}agd.cartones-=cant;await db.collection('agents_data').doc(agente).set(agd,{merge:true});}
+  let d=cacheUsersData[cli]||{saldo:0,cartones:0,hist:[]};d.cartones=(d.cartones||0)+cant;d.hist=d.hist||[];d.hist.unshift({fecha:new Date().toLocaleString(),detalle:`+${cant} ${document.getElementById('notaCarga').value||''}`,monto:0});await db.collection('users_data').doc(cli).set(d,{merge:true});await db.collection('users').doc(cli).set({availableCartons:d.cartones},{merge:true});alert(`✅ ${cant}c a ${cli} - Total: ${d.cartones}`);document.getElementById('cantCarga').value='';document.getElementById('notaCarga').value='';document.getElementById('selCarga').style.display='none';selectedCarga=null;await loadAll();renderStats();renderCargarLista();renderClientes();
 }
-
-// RETIROS
+async function cargarAgenteCart(){
+  let id=document.getElementById('selAgCarga').value.trim().toLowerCase()||selectedAg;
+  let cant=parseInt(document.getElementById('cantAgCarga').value)||0;
+  if(!id||cant<=0){alert('Agente y cantidad >0');return}
+  if(!cacheAgents[id]){alert('Agente no existe');return}
+  let d=cacheAgentsData[id]||{cartones:0,hist:[]};d.cartones=(d.cartones||0)+cant;d.hist.unshift({fecha:new Date().toLocaleString(),detalle:`+${cant} admin`});await db.collection('agents_data').doc(id).set(d,{merge:true});await db.collection('agents').doc(id).set({cartones:d.cartones},{merge:true});alert(`✅ ${cant} a agente ${id} - Total: ${d.cartones}`);document.getElementById('cantAgCarga').value='';document.getElementById('selAgBox').style.display='none';selectedAg=null;await loadAll();renderStats();renderAgentes();
+}
 function renderRetiros(){
   let q=(document.getElementById('buscarRetiro')?.value||'').toLowerCase();
-  let html='';let count=0;
+  let html='';
   for(let id in cacheUsersData){
-    if((cacheUsersData[id].saldo||0)<=0) continue;
-    if(q&&!id.toLowerCase().includes(q)) continue;
-    count++;
-    let ag=cacheUsers[id]?.agent||'Directo';let d=cacheUsersData[id];let isSel=selectedRetiro===id?' selected win':' win';
-    let ultimo=(d.hist||[]).find(h=>h.monto>0)||{detalle:'Premio ganado'};
-    html+=`<div class="item${isSel}" onclick="seleccionarRetiro('${id}')"><div style="display:flex;justify-content:space-between"><div><b>👤 ${id}</b><div style="font-size:11px;color:#6b7280;margin-top:3px">🏆 ${ultimo.detalle}</div></div><span class="badge badge-agent">${ag==='Directo'?'👑 Directo':'🤝 '+ag}</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px"><b style="color:#059669;font-size:16px">${d.saldo.toLocaleString()} GS</b><span style="font-size:10px;color:#4f46e5;font-weight:700">👉 TOCA PARA SELECCIONAR</span></div></div>`;
+    if((cacheUsersData[id].saldo||0)<=0)continue;
+    if(q&&!id.toLowerCase().includes(q))continue;
+    let d=cacheUsersData[id];let ag=cacheUsers[id]?.agent||'Directo';
+    html+=`<div class="item win ${selectedRetiro===id?'selected':''}" onclick="seleccionarRetiro('${id}')"><div style="display:flex;justify-content:space-between"><div><b>👤 ${id}</b><div style="font-size:11px;color:#6b6b8a">🏆 ${ag==='Directo'?'👑 Directo':'🤝 '+ag}</div></div><b style="color:#059669;font-size:16px">${d.saldo.toLocaleString()} GS</b></div></div>`;
   }
   document.getElementById('listaRetiros').innerHTML=html||'<div style="text-align:center;color:#9ca3af;padding:30px;border:1px dashed #e5e7eb;border-radius:12px">✅ Sin premios por pagar</div>';
-  let hist=[];for(let id in cacheUsersData){(cacheUsersData[id].hist||[]).forEach(h=>{if(h.retirado) hist.push({id,ag:cacheUsers[id]?.agent||'Directo',monto:h.retirado,fecha:h.fecha});});} hist.sort((a,b)=>b.fecha.localeCompare(a.fecha));
-  let htmlH=hist.slice(0,20).map(h=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f4f6;font-size:12px"><span><b>${h.id}</b> <span style="color:#6b7280">${h.ag!=='Directo'?'🤝 '+h.ag:'👑 Directo'}</span><div style="font-size:10px;color:#9ca3af">${h.fecha}</div></span><b style="color:#dc2626">-${h.monto.toLocaleString()} PAGADO</b></div>`).join(''); document.getElementById('histPagados').innerHTML=htmlH||'<div style="text-align:center;color:#9ca3af;padding:20px">Sin pagos aún</div>';
+  let hist=[];for(let id in cacheUsersData){(cacheUsersData[id].hist||[]).forEach(h=>{if(h.retirado)hist.push({id,ag:cacheUsers[id]?.agent||'Directo',monto:h.retirado,fecha:h.fecha});});}hist.sort((a,b)=>b.fecha.localeCompare(a.fecha));let htmlH=hist.slice(0,20).map(h=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f4f6;font-size:12px"><span><b>${h.id}</b> <span style="color:#6b7280">${h.ag!=='Directo'?'🤝 '+h.ag:'👑 Directo'}</span><div style="font-size:10px;color:#9ca3af">${h.fecha}</div></span><b style="color:#dc2626">-${h.monto.toLocaleString()} PAGADO</b></div>`).join('');document.getElementById('histPagados').innerHTML=htmlH||'<div style="text-align:center;color:#9ca3af;padding:20px">Sin pagos aún</div>';
 }
 async function pagarPremioSel(){
   let id=document.getElementById('selRetiro').value.trim().toLowerCase()||selectedRetiro;
-  if(!id){alert('Escribí o tocá un cliente con premio');return}
-  let d=cacheUsersData[id];if(!d||!d.saldo){alert('Sin premio por pagar o usuario no existe');return}
-  if(!confirm(`¿Confirmás que pagaste ${d.saldo.toLocaleString()} GS a ${id}?`)) return;
-  let monto=d.saldo;d.hist=d.hist||[];d.hist.unshift({fecha:new Date().toLocaleString(),detalle:'Premio retirado pagado',retirado:monto});d.saldo=0;
+  if(!id){alert('Selecciona cliente con premio');return}
+  let d=cacheUsersData[id];if(!d||!d.saldo){alert('Sin premio');return}
+  if(!confirm(`¿Pagaste ${d.saldo.toLocaleString()} GS a ${id}?`)) return;
+  let monto=d.saldo;d.hist=d.hist||[];d.hist.unshift({fecha:new Date().toLocaleString(),detalle:'Premio pagado',retirado:monto,nota:document.getElementById('notaRetiro').value||''});d.saldo=0;
   await db.collection('users_data').doc(id).set(d,{merge:true});await db.collection('users').doc(id).set({balance:0},{merge:true});
-  alert(`✅ Pagado ${monto.toLocaleString()} GS a ${id}`);document.getElementById('selRetiro').value='';document.getElementById('montoRetiro').value='';document.getElementById('selRetiroBox').style.display='none';selectedRetiro=null;
-  await loadAll();renderStats();renderRetiros();renderCargarLista();renderClientes();
+  alert(`✅ Pagado ${monto.toLocaleString()} GS a ${id}`);document.getElementById('selRetiro').value='';document.getElementById('montoRetiro').value='';document.getElementById('notaRetiro').value='';document.getElementById('selRetiroBox').style.display='none';selectedRetiro=null;await loadAll();renderStats();renderRetiros();renderClientes();
 }
-
-if(localStorage.getItem('rv_javi')){document.getElementById('loginBox').style.display='none';document.getElementById('panel').classList.remove('hidden');init();}
+async function renderAdmins(){
+  try{
+    let snap=await db.collection('config').doc('admins').get();
+    let lista=snap.exists ? snap.data().lista||[] : [];
+    let html=lista.map(a=>`<div class="item" style="display:flex;justify-content:space-between;align-items:center"><div><b>👑 ${a.user}</b><div style="font-size:10px;color:#6b6b8a">Creado: ${a.created||''} • 🔒 SHA-256</div></div>${a.user.toLowerCase()!==localStorage.getItem('rv_javi_user')?.toLowerCase()?`<button class="btn btn-danger btn-sm" style="width:auto" onclick="borrarAdmin('${a.user}')">Borrar</button>`:'<span class="badge badge-lock">TÚ</span>'}</div>`).join('');
+    document.getElementById('listaAdmins').innerHTML=html||'<div style="text-align:center;color:#9ca3af;padding:20px">Solo Javi</div>';
+  }catch(e){ document.getElementById('listaAdmins').innerHTML='Error: '+e.message; }
+}
+async function crearAdmin(){
+  let u=document.getElementById('newAdminUser').value.trim();
+  let p=document.getElementById('newAdminPass').value.trim();
+  if(!u||!p){alert('Usuario y pass');return}
+  if(p.length<6){alert('Pass admin min 6 por seguridad');return}
+  let snap=await db.collection('config').doc('admins').get();
+  let lista=snap.exists ? snap.data().lista||[] : [];
+  if(lista.find(a=>a.user.toLowerCase()===u.toLowerCase())){alert('Admin ya existe');return}
+  let h=await hashPass(p);
+  lista.push({user:u, passHash:h, created:new Date().toLocaleString(), by:localStorage.getItem('rv_javi_user')||'Javi'});
+  await db.collection('config').doc('admins').set({lista});
+  alert(`✅ Admin seguro ${u} creado`);
+  document.getElementById('newAdminUser').value='';document.getElementById('newAdminPass').value='';
+  renderAdmins();
+}
+async function borrarAdmin(user){
+  if(!confirm(`¿Borrar admin ${user}?`)) return;
+  let snap=await db.collection('config').doc('admins').get();
+  let lista=snap.data().lista||[];
+  lista=lista.filter(a=>a.user!==user);
+  await db.collection('config').doc('admins').set({lista});
+  alert(`🗑️ Admin ${user} borrado`);
+  renderAdmins();
+}
+async function migrarPassViejas(){
+  if(!confirm('¿Migrar pass viejas en texto plano a SHA-256? No borra usuarios.')) return;
+  let count=0;
+  for(let id in cacheAgents){
+    if(cacheAgents[id].pass && !cacheAgents[id].passHash){
+      let h=await hashPass(cacheAgents[id].pass);
+      await db.collection('agents').doc(id).set({passHash:h, pass: firebase.firestore.FieldValue.delete()},{merge:true});
+      count++;
+    }
+  }
+  for(let id in cacheUsers){
+    if(cacheUsers[id].pass && !cacheUsers[id].passHash){
+      let h=await hashPass(cacheUsers[id].pass);
+      await db.collection('users').doc(id).set({passHash:h, pass: firebase.firestore.FieldValue.delete()},{merge:true});
+      count++;
+    }
+  }
+  alert(`✅ Migrados ${count} a encriptado`);
+  loadAll();
+}
+if(localStorage.getItem('rv_javi')){document.getElementById('loginBox').style.display='none';document.getElementById('panel').classList.remove('hidden');document.getElementById('adminTag').textContent=localStorage.getItem('rv_javi_user')||'Javi';init();}
 document.addEventListener('click',e=>{if(!e.target.closest('.input-wrap')){document.querySelectorAll('.sug').forEach(s=>s.style.display='none');}});
 </script>
 </body>
